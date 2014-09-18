@@ -4,8 +4,9 @@
  * and open the template in the editor.
  */
 
-package view;
+package GUI.user;
 
+import model.user.PropostaConfermata;
 import controller.CommunicationController;
 import model.*;
 import controller.Controller;

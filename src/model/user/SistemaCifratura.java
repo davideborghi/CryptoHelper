@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package model;
+package model.user;
 
 //import static controller.Controller.connect;
 import db.DbManager;
@@ -13,6 +13,9 @@ import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
 import java.util.Vector;
+import model.Session;
+import model.Studente;
+import model.UserInfo;
 
 /**
  *

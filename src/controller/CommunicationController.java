@@ -15,9 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 import model.Messaggio;
-import model.Proposta;
-import model.PropostaConfermata;
-import model.SistemaCifratura;
+import model.user.Proposta;
+import model.user.PropostaConfermata;
+import model.user.SistemaCifratura;
 import model.Studente;
 import model.UserInfo;
 

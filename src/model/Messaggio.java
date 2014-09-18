@@ -6,6 +6,8 @@
 
 package model;
 
+import model.user.Cifratore;
+import model.user.SistemaCifratura;
 import static controller.Controller.*;
 import db.DbManager;
 import db.DbManager0;

@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package view;
+package GUI.user;
 
 import model.Messaggio;
 import model.MessaggioDestinatario;

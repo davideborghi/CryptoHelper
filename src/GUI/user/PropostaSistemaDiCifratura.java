@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 
-package view;
+package GUI.user;
 
 import model.Session;
 //import ClmodelserInfo;
@@ -14,8 +14,8 @@ import controller.Controller;
 //import Controviewoller;
 import java.util.Vector;
 import javax.swing.ListModel;
-import model.Proposta;
-import model.SistemaCifratura;
+import model.user.Proposta;
+import model.user.SistemaCifratura;
 import model.Studente;
 
 /**

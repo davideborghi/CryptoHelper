@@ -5,7 +5,7 @@
  */
 
 package controller;
-import model.Proposta;
+import model.user.Proposta;
 //import Clmodelession;
 //import Clasmodeldente;
 //import Classemodelnfo;
@@ -16,9 +16,9 @@ import db.QueryResult;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
-import model.PropostaConfermata;
+import model.user.PropostaConfermata;
 import model.Session;
-import model.SistemaCifratura;
+import model.user.SistemaCifratura;
 import model.Studente;
 import model.UserInfo;
 /**

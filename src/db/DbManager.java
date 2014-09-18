@@ -20,8 +20,8 @@ import java.util.Vector;
 public class DbManager {
 
     private String nomeDB = "cryptohelper"; // Nome del Database a cui connettersi
-    private String nomeUtente = "root"; // Nome utente utilizzato per la connessione al Database
-    private String pwdUtente = "root"; // Password usata per la connessione al Database
+    private String nomeUtente = "cryptohelper"; // Nome utente utilizzato per la connessione al Database
+    private String pwdUtente = "cryptohelper"; // Password usata per la connessione al Database
     private String errore; // Raccoglie informazioni riguardo l'ultima eccezione sollevata
     private Connection db; // La connessione col Database
     private boolean connesso; // Flag che indica se la connessione è attiva o meno
