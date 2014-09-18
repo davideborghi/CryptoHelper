@@ -15,14 +15,14 @@ import model.Messaggio;
  *
  * @author user
  */
-public class ListaMessaggiCifrati extends javax.swing.JFrame {
+public class MessaggiSelector extends javax.swing.JFrame {
 
     public static Messaggio getMessaggio() {
         final SynchronizedBuffer<Messaggio> buff = new SynchronizedBuffer<>();
 
         new Thread( new Runnable() {
             public void run() {
-                ListaMessaggiCifrati listaMessaggiCifrati = new ListaMessaggiCifrati(buff);
+                MessaggiSelector listaMessaggiCifrati = new MessaggiSelector(buff);
                 listaMessaggiCifrati.setVisible(true);
             }
         } ).start();
@@ -57,14 +57,14 @@ public class ListaMessaggiCifrati extends javax.swing.JFrame {
     }
     
     SynchronizedBuffer<Messaggio> syncBuffer;
-    public ListaMessaggiCifrati( SynchronizedBuffer<Messaggio> c ) {
+    public MessaggiSelector( SynchronizedBuffer<Messaggio> c ) {
         this();
         this.syncBuffer = c;
     }
     /**
      * Creates new form NuovaSessione
      */
-    public ListaMessaggiCifrati () {
+    public MessaggiSelector () {
         initComponents();
         List<Messaggio> list = Messaggio.getMessaggi();
         Messaggio[] arr = list.toArray( new Messaggio[list.size()] );
@@ -152,13 +152,13 @@ public class ListaMessaggiCifrati extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ListaMessaggiCifrati.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ListaMessaggiCifrati.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ListaMessaggiCifrati.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ListaMessaggiCifrati.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -168,7 +168,7 @@ public class ListaMessaggiCifrati extends javax.swing.JFrame {
 
         new Thread( new Runnable() {
             public void run() {
-                ListaMessaggiCifrati listaMessaggiCifrati = new ListaMessaggiCifrati(b);
+                MessaggiSelector listaMessaggiCifrati = new MessaggiSelector(b);
                 listaMessaggiCifrati.setVisible(true);
             }
         } ).start();

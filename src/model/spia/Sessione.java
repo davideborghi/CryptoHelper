@@ -1,7 +1,9 @@
 package model.spia;
 
 
-import GUI.spia.ListaMessaggiCifrati;
+import GUI.spia.GenericSelector;
+import GUI.spia.MessaggiSelector;
+import java.util.List;
 import model.Messaggio;
 
 
@@ -21,11 +23,13 @@ public class Sessione {
     public static class Properties extends java.util.Hashtable<String, Object> {}
     
     public static Sessione startNewSessione() {
-        Messaggio m = ListaMessaggiCifrati.getMessaggio();
-        
-        //DO CODE
-        return new Sessione( (Properties)null );
+        List<Messaggio> options = Messaggio.getMessaggi();
+        for( Messaggio m: options ) {
+            m.setToStringF("%lingua%, %testoCif%");
+        }
+        return new Sessione( GenericSelector.selectOptions( options ) );
     }
+    
     public static Sessione restoreSessione() {
         //DO CODE
         return new Sessione( (Properties)null );
