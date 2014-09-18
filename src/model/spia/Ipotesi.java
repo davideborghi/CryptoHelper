@@ -21,6 +21,9 @@ public class Ipotesi extends javax.swing.tree.DefaultMutableTreeNode {
     
     private String messaggioParzialmenteDecifrato;
     
+    public String getMessaggioParzialmenteDecifrato() {
+        return this.messaggioParzialmenteDecifrato;
+    }
     
     public void add( Ipotesi p ) {
         super.add( p );

@@ -8,7 +8,7 @@ package model;
 
 //import static controller.Controller.connect;
 import db.DbManager;
-import db.DbManager0;
+import db.DbManager;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
@@ -31,7 +31,7 @@ public class UserInfo {
         this.cognome = ((String[]) v.elementAt(0))[4];*/
         this.id = id;
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM `cryptohelper`.`user` WHERE id = '" + id + "'");
             QueryResult rs = db.execute(q);
             rs.next();

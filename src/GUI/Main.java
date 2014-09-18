@@ -176,26 +176,21 @@ public class Main extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        Vector v;
-        if(jTextField1.getText().equals(""))
+        
+        if (jTextField1.getText().equals("")) {
             jLabel4.setText("Inserisci username");
-        if(jPasswordField1.getPassword().equals(""))
+        }
+        if (jPasswordField1.getPassword().equals("")) {
             jLabel4.setText("Inserisci Password");
-        else{
-            Studente s = new Studente(jTextField1.getText(), ""+jPasswordField1.getText(), true);
+        } else {
+            Studente s = new Studente(jTextField1.getText(), "" + jPasswordField1.getText(), true);
             boolean conferma = s.login();
-            if(!conferma)
+            if (!conferma) {
                 jLabel4.setText("Username e/o password non corretti: riprova");
-            else{
-                //jLabel4.setText("Ok sei loggato");
-                Session g = new Session(s.getId(), s.toString());
-                Utente_Regolamentare m = new Utente_Regolamentare();
-                m.setVisible(true);
+            } else {
+                new Utente_Regolamentare().setVisible(true);
             }
-                
-            
-            
+
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 

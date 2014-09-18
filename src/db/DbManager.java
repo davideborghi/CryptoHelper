@@ -3,161 +3,75 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 package db;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  *
- * @author MASTER
+ * @author BobCaSUaL <casual4free@gmail.com>
  */
-/*
- * Classe dedicata alla gestione del Database.
- * Gestisce l'apertura e la chiusura della connessione col Database
- * Fornisce i metodi per l'esecuzione delle query sul Database
- */
-import java.sql.*;
-import java.util.Vector;
-
 public class DbManager {
 
-    private String nomeDB = "cryptohelper"; // Nome del Database a cui connettersi
-    private String nomeUtente = "cryptohelper"; // Nome utente utilizzato per la connessione al Database
-    private String pwdUtente = "cryptohelper"; // Password usata per la connessione al Database
-    private String errore; // Raccoglie informazioni riguardo l'ultima eccezione sollevata
-    private Connection db; // La connessione col Database
-    private boolean connesso; // Flag che indica se la connessione è attiva o meno
-
-    public DbManager(String nomeDB) {
-        this(nomeDB, "", "");
+  /********** static part *********/
+  private static DbManager instance = null;
+  
+  public static synchronized DbManager getInstance() throws SQLException {
+    if( null == instance ) {
+      instance = new DbManager();
     }
-
-    public DbManager(String nomeDB, String nomeUtente, String pwdUtente) {
-        this.nomeDB = nomeDB;
-        this.nomeUtente = nomeUtente;
-        this.pwdUtente = pwdUtente;
-        connesso = false;
-        errore = "";
+    return instance;
+  }
+  
+  
+  /******* object definition *******/
+  
+  private String schema = "cryptohelper"; // Nome del Database a cui connettersi
+  private String uname = "cryptohelper"; // Nome utente utilizzato per la connessione al Database
+  private String passw = "cryptohelper"; // Password usata per la connessione al Database
+  
+  private Connection engine; // La connessione col Database
+  
+  
+  /******* internal classes *******/
+  
+  public class QueryImpl extends QueryAbstract {
+    String sql;
+    public QueryImpl( String sql ) throws SQLException {
+      super( engine.prepareStatement(sql), sql );
     }
+  }
+  public class QueryResultImpl extends QueryResultAbstract {
 
-// Apre la connessione con il Database
-    public boolean connetti() {
-        connesso = false;
-        try {
-
-// Carico il driver JDBC per la connessione con il database MySQL
-            Class.forName("com.mysql.jdbc.Driver");
-
-// Controllo che il nome del Database non sia nulla
-            if (!nomeDB.equals("")) {
-
-// Controllo se il nome utente va usato o meno per la connessione
-                if (nomeUtente.equals("")) {
-
-// La connessione non richiede nome utente e password
-                    db = DriverManager.getConnection("jdbc:mysql://localhost/" + nomeDB);
-                } else {
-
-// La connessione richiede nome utente, controllo se necessita anche della password
-                    if (pwdUtente.equals("")) {
-
-// La connessione non necessita di password
-                        db = DriverManager.getConnection("jdbc:mysql://localhost/" + nomeDB + "?user=" + nomeUtente);
-                    } else {
-
-// La connessione necessita della password
-                        db = DriverManager.getConnection("jdbc:mysql://localhost/" + nomeDB + "?user=" + nomeUtente + "&password=" + pwdUtente);
-                    }
-                }
-
-// La connessione è avvenuta con successo
-                connesso = true;
-            } else {
-                System.out.println("Manca il nome del database!!");
-                System.out.println("Scrivere il nome del database da utilizzare all'interno del file \"config.xml\"");
-                System.exit(0);
-            }
-        } catch (Exception e) {
-            errore = e.getMessage();
-            e.printStackTrace();
-        }
-        return connesso;
+    public QueryResultImpl(Query q) throws SQLException {
+      super(q.executeQuery(), q);
     }
+  }
+  
+  /*public class QueryResultImpl2 extends QueryResultAbstract {
 
-// Esegue una query di selezione dati sul Database
-// query: una stringa che rappresenta un'istruzione SQL di tipo SELECT da eseguire
-// colonne: il numero di colonne di cui sarà composta la tupla del risultato
-// ritorna un Vector contenente tutte le tuple del risultato
-    public Vector eseguiQuery(String query) {
-        Vector v = null;
-        String[] record;
-        int colonne = 0;
-        try {
-            Statement stmt = db.createStatement(); // Creo lo Statement per l'esecuzione della query
-            ResultSet rs = stmt.executeQuery(query); // Ottengo il ResultSet dell'esecuzione della query
-            v = new Vector();
-            ResultSetMetaData rsmd = rs.getMetaData();
-            colonne = rsmd.getColumnCount();
-
-            while (rs.next()) { // Creo il vettore risultato scorrendo tutto il ResultSet
-                record = new String[colonne];
-                for (int i = 0; i < colonne; i++) {
-                    record[i] = rs.getString(i + 1);
-                }
-                v.add((String[]) record.clone());
-            }
-            rs.close(); // Chiudo il ResultSet
-            stmt.close(); // Chiudo lo Statement
-        } catch (Exception e) {
-            e.printStackTrace();
-            errore = e.getMessage();
-        }
-
-        return v;
+    public QueryResultImpl2(Query q) throws SQLException {
+      super(q.executeUpdate(), q);
     }
-
-// Esegue una query di aggiornamento sul Database
-// query: una stringa che rappresenta un'istuzione SQL di tipo UPDATE da eseguire
-// ritorna TRUE se l'esecuzione è adata a buon fine, FALSE se c'è stata un'eccezione
-    public boolean eseguiAggiornamento(String query) {
-        int n = 0;
-        boolean risultato = false;
-        try {
-            Statement stmt = db.createStatement();
-            n = stmt.executeUpdate(query);
-            risultato = true;
-            stmt.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            errore = e.getMessage();
-            risultato = false;
-        }
-        return risultato;
-    }
-    
-    /*public boolean inserisciNuovovalore(String query){ //query di insert
-        int n = 0;
-        try{
-            Statement stmt = db.createStatement();
-            n = stmt.
-        }
-        
-        return true;
-    }*/
-
-// Chiude la connessione con il Database
-    public void disconnetti() {
-        try {
-            db.close();
-            connesso = false;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public boolean isConnesso() {
-        return connesso;
-    } // Ritorna TRUE se la connessione con il Database è attiva
-
-    public String getErrore() {
-        return errore;
-    } // Ritorna il messaggio d'errore dell'ultima eccezione sollevata
+  }*/
+  
+  private DbManager() throws SQLException {
+    DriverManager.registerDriver( new com.mysql.jdbc.Driver() );
+    engine = DriverManager.getConnection("jdbc:mysql://localhost/" + schema, uname, passw);
+  }
+  
+  public Query createQuery( String sql ) throws SQLException {
+    return new QueryImpl( sql );
+  }
+  public QueryResult execute( Query q ) throws SQLException {
+    return new QueryResultImpl( q );
+  }
+  
+  /*public QueryResult executeUpdate( Query q ) throws SQLException {
+    return new QueryResultImpl( q );
+  }*/
+  
 }

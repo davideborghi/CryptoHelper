@@ -1,7 +1,7 @@
 package model.spia;
 
 
-import model.Messaggio;
+import GUI.spia.ListaMessaggiCifrati;
 import model.Messaggio;
 
 
@@ -21,6 +21,8 @@ public class Sessione {
     public static class Properties extends java.util.Hashtable<String, Object> {}
     
     public static Sessione startNewSessione() {
+        Messaggio m = ListaMessaggiCifrati.getMessaggio();
+        
         //DO CODE
         return new Sessione( (Properties)null );
     }

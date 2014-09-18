@@ -7,13 +7,10 @@
 package controller;
 
 import db.DbManager;
-import db.DbManager0;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
 import model.Messaggio;
 import model.user.Proposta;
 import model.user.PropostaConfermata;
@@ -36,7 +33,7 @@ public class CommunicationController extends Controller{
         ArrayList<Proposta> result = new ArrayList<>();
         
         try {
-          DbManager0 db = DbManager0.getInstance();
+          DbManager db = DbManager.getInstance();
 
           Query q = db.createQuery("SELECT * FROM `cryptohelper`.`proposta` WHERE id_destinatario = " + id_user + " && stato = 'in attesa'");
           QueryResult rs = db.execute( q );
@@ -70,7 +67,7 @@ public class CommunicationController extends Controller{
         ArrayList<PropostaConfermata> result = new ArrayList<>();
         
         try {
-          DbManager0 db = DbManager0.getInstance();
+          DbManager db = DbManager.getInstance();
 
           Query q = db.createQuery("SELECT * FROM `cryptohelper`.`proposta` WHERE id_mittente = " + id_user + " && stato = 'accettata'");
           QueryResult rs = db.execute( q );
@@ -111,7 +108,7 @@ public class CommunicationController extends Controller{
     }
     
     public Messaggio apriMessaggioRicevuto(int id){
-        return new Messaggio();
+        return null;
     }
     
 }

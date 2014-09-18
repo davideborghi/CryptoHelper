@@ -6,10 +6,16 @@ package model.spia;
  * and open the template in the editor.
  */
 
+import model.*;
+
 /**
  *
  * @author user
  */
-public interface Spia {
+public class Spia extends Studente {
+
+    public Spia(String user) {
+        super(user);
+    }
     
 }

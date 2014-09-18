@@ -8,15 +8,12 @@ package model;
 
 import model.user.Cifratore;
 import model.user.SistemaCifratura;
-import static controller.Controller.*;
 import db.DbManager;
-import db.DbManager0;
 import db.Query;
 import db.QueryResult;
-import java.awt.List;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  *
@@ -29,8 +26,20 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
     private String testo, testoCifrato, lingua, titolo;
     private boolean bozza, letto;
     
-    public Messaggio(){
-        /*QUERY RESULT*/
+    public Messaggio(QueryResult rs) throws SQLException {
+        this.id = rs.getInt(1);
+        this.mittente = new UserInfo(rs.getString(2));
+        this.destinatario = new UserInfo(rs.getString(3));
+        this.testo = rs.getString(4);
+        this.lingua = rs.getString(6);
+        this.testoCifrato = rs.getString(5);
+        this.sdc = SistemaCifratura.load( rs.getString("idsistemacifratura") ); 
+        this.bozza = rs.getBoolean(8);
+        this.letto = rs.getBoolean(9);
+  
+        
+        
+         
     }
     
     public Messaggio(String testo, String lingua, UserInfo mittente, UserInfo destinatario){
@@ -86,18 +95,35 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         }
     }//carica il messaggio*/
     
-    public static List caricaIniviati(Studente s){
-        return new List();
+    public static List<Messaggio> caricaIniviati(Studente s){
+        return null;
     }
     
-    public static List caricaBozze(Studente s){
-        return new List();
+    public static List<Messaggio> caricaBozze(Studente s){
+        return null;
+    }
+    
+    public static List<Messaggio> getMessaggi(){
+        ArrayList<Messaggio> result = new ArrayList<>();
+        try{
+            DbManager db = DbManager.getInstance();
+            Query q = db.createQuery("SELECT * FROM `cryptohelper`.`messaggio`");
+            QueryResult rs = db.execute(q);
+            while( rs.next() ){
+                
+                result.add( new Messaggio(rs) );
+            }
+        }
+        catch (SQLException ex){
+            throw new RuntimeException( ex.getMessage(), ex );
+        }
+        return result;
     }
     
     public static MessaggioDestinatario[] caricaRicevuti(){
         ArrayList<MessaggioDestinatario> result = new ArrayList<>();
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM `cryptohelper`.`messaggio` WHERE id_destinatario = " + Session.getIdLoggedUser());
             QueryResult rs = db.execute(q);
             while( rs.next() ){
@@ -153,7 +179,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         System.out.println("sgsgf");
         return true;*/
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.mittente.getId()+"', '"+this.destinatario.getId()+"', '" + this.testo + "', '" + this.testoCifrato + "' , '" + this.lingua + "', 'titoloDiProva', " + this.bozza + ", false);");
             q.executeUpdate();
         }
@@ -167,8 +193,20 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         return true;
     }
     
+    private String toStringF = "Messaggio in lingua: %lingua% inviato da utente con id %mittenteID% ad utente con id %destinatario% e testo: %testo%";
+    public String setToStringF( String f ) {
+        String result = toStringF;
+        this.toStringF = f;
+        return result;
+    }
     public String toString(){
-        return "Messaggio in lingua:" + lingua + "inviato da utente con id " + this.mittente.getId() + " ad utente con id " + this.destinatario.getId() + " e testo: " + this.testo;
+        String result = toStringF;
+        result = result.replaceAll("%lingua%", lingua);
+        result = result.replaceAll("%mittenteID%", mittente.getId());
+        result = result.replaceAll("%destinatarioID%", destinatario.getId());
+        result = result.replaceAll("%testo%", testo);
+        result = result.replaceAll("%testoCif", testoCifrato);
+        return result; 
     }
     
     public boolean send(){

@@ -18,7 +18,7 @@ import controller.Controller;
 public class NuovoMessaggio extends javax.swing.JFrame {
     private PropostaConfermata[] a = CommunicationController.getProposteAccettate(Session.getIdLoggedUser());
     private int index;
-    private Messaggio m = new Messaggio();
+    private Messaggio m = null;
     /**
      * Creates new form NuovoMessaggio
      */

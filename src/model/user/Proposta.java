@@ -9,7 +9,7 @@ package model.user;
 import controller.Controller;
 //import static controller.Controller.connect;
 import db.DbManager;
-import db.DbManager0;
+import db.DbManager;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
@@ -56,7 +56,7 @@ public class Proposta {
         System.out.println("sgsgf");
         return true;*/
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("INSERT INTO `cryptohelper`.`proposta` (`id`, `id_mittente`, `id_destinatario`, `idsistemacifratura`, `stato`, `notificata`) VALUES (NULL, '" +this.proponente.getId()+"', '"+this.partner.getId()+"', '" + Integer.parseInt(this.s.getId()) + "', 'in attesa', NULL);");
             q.executeUpdate();
         }

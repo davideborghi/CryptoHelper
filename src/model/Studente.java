@@ -8,11 +8,9 @@ package model;
 
 //import static controller.Controller.connect;
 import db.DbManager;
-import db.DbManager0;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
-import java.util.Vector;
 
 /**
  *
@@ -24,7 +22,7 @@ public class Studente {
     private String id;
     private String login;
     private String pwd;
-    private DbManager0 DbManager0;
+    private DbManager DbManager0;
     
     public Studente(String user){
         this.login = user;
@@ -57,7 +55,7 @@ public class Studente {
         this.id = s;
         return true;*/
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager0.getInstance();
             Query q = db.createQuery("SELECT * FROM user WHERE username = '"+this.login+"' and password = '"+this.pwd+"';");
             QueryResult rs = db.execute(q);
             rs.next();
@@ -81,7 +79,7 @@ public class Studente {
         // Ora chiudo la connessione col Database:
         db.disconnetti();*/
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager0.getInstance();
             Query q = db.createQuery("INSERT INTO `cryptohelper`.`user` (`username`, `password`, `nome`, `cognome`) VALUES ('" +this.login+"', '"+this.pwd+"', NULL, NULL);");
             q.executeUpdate();
         }

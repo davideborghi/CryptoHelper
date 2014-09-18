@@ -10,7 +10,7 @@ import model.user.Proposta;
 //import Clasmodeldente;
 //import Classemodelnfo;
 import db.DbManager;
-import db.DbManager0;
+import db.DbManager;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
@@ -53,7 +53,7 @@ public class Controller {
     public static boolean accettaProposta(Proposta p){
         //DbManager db = connect();
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("UPDATE `cryptohelper`.`proposta` SET `stato` = 'accettata' WHERE `proposta`.`id` = " + p.getId());
             q.executeUpdate();
         }
@@ -70,7 +70,7 @@ public class Controller {
     
     public static boolean rifiutaProposta(Proposta p){
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("UPDATE `cryptohelper`.`proposta` SET `stato` = 'rifiutata' WHERE `proposta`.`id` = " + p.getId());
             q.executeUpdate();
         }
@@ -102,7 +102,7 @@ public class Controller {
     public static Studente[] recuperaUtenti(){
         ArrayList<Studente> result = new ArrayList<>();
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM user where username <> '" + Session.getLoggedUser() + "'");
             QueryResult rs = db.execute( q );
             while( rs.next() ) {

@@ -8,7 +8,7 @@ package model.user;
 
 //import static controller.Controller.connect;
 import db.DbManager;
-import db.DbManager0;
+import db.DbManager;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
@@ -51,11 +51,14 @@ public class SistemaCifratura {
         Vector v = db.eseguiQuery("SELECT * FROM `cryptohelper`.`sistemacifratura` WHERE id = '" + id + "'");
         return new SistemaCifratura(((String[])v.elementAt(0))[0], ((String[])v.elementAt(0))[1], ((String[])v.elementAt(0))[2], new UserInfo(((String[])v.elementAt(0))[3]));*/
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM `cryptohelper`.`sistemacifratura` WHERE id = '" + id + "'");
             QueryResult rs = db.execute(q);
-            rs.next();
-            return new SistemaCifratura(rs.getString(1), rs.getString(2), rs.getString(3), new UserInfo(rs.getString(4)));
+            if( rs.next() ) {
+                return new SistemaCifratura(rs.getString(1), rs.getString(2), rs.getString(3), new UserInfo(rs.getString(4)));
+            } else {
+                return null;
+            }
         }
          catch(SQLException ex){
             throw new RuntimeException( ex.getMessage(), ex );
@@ -87,7 +90,7 @@ public class SistemaCifratura {
         this.metodo = metodo;
         this.creatore = new UserInfo(Session.getIdLoggedUser()); 
         try{
-            DbManager0 db = DbManager0.getInstance();
+            DbManager db = DbManager.getInstance();
             Query q = db.createQuery("INSERT INTO `cryptohelper`.`sistemacifratura` (`id`, `chiave`, `metodo`, `idcreatore`) VALUES (NULL, '" +chiave+"', '"+metodo+"', '" + Session.getIdLoggedUser() + "')");
             q.executeUpdate();
             q = db.createQuery("SELECT * FROM `cryptohelper`.`sistemacifratura` ORDER BY id DESC");
