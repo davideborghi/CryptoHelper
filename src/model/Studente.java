@@ -17,6 +17,13 @@ import java.sql.SQLException;
  * @author MASTER
  */
 public class Studente {
+  
+    private static Studente loggato = null;
+    
+    public static Studente getLoggato() {
+      return loggato;
+    }
+    
     private String nome;
     private String cognome;
     private String id;
