@@ -4,32 +4,54 @@
  * and open the template in the editor.
  */
 
-package GUI.spia;
+package GUI;
 
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import model.Messaggio;
 
 /**
  *
  * @author user
+ * @param <T>
  */
-public class MessaggiSelector extends javax.swing.JFrame {
-
-    public static Messaggio getMessaggio() {
-        final SynchronizedBuffer<Messaggio> buff = new SynchronizedBuffer<>();
-
+public class GenericSelector<T> extends javax.swing.JFrame {
+    
+    public static <K extends Object> K selectOptions( List<K> list ) {
+        
+        final SynchronizedBuffer<K> buff = new SynchronizedBuffer<>();
+        final List<K> fList = list;
+        
         new Thread( new Runnable() {
+            @Override
             public void run() {
-                MessaggiSelector listaMessaggiCifrati = new MessaggiSelector(buff);
-                listaMessaggiCifrati.setVisible(true);
+                GenericSelector<K> selector = new GenericSelector<>(buff);
+                selector.setOptionList( fList );
+                selector.setVisible(true);
             }
         } ).start();
         
         return buff.get();
     }
-    public static class SynchronizedBuffer<T> {
+    
+    
+    SynchronizedBuffer<T> syncBuffer;
+    
+    public GenericSelector( SynchronizedBuffer<T> c ) {
+        this();
+        this.syncBuffer = c;
+    }
+    /**
+     * Creates new form NuovaSessione
+     */
+    public GenericSelector () {
+        initComponents();
+    }
+    
+    public void setOptionList( List<T> list ) {
+        T[] arr = (T[]) list.toArray( new Object[list.size()] );
+        jList1.setListData(arr);
+    }
+    
+        public static class SynchronizedBuffer<T> {
         private T contents;
         private boolean available = false;
 
@@ -55,26 +77,7 @@ public class MessaggiSelector extends javax.swing.JFrame {
             notifyAll();
         }
     }
-    
-    SynchronizedBuffer<Messaggio> syncBuffer;
-    public MessaggiSelector( SynchronizedBuffer<Messaggio> c ) {
-        this();
-        this.syncBuffer = c;
-    }
-    /**
-     * Creates new form NuovaSessione
-     */
-    public MessaggiSelector () {
-        initComponents();
-        List<Messaggio> list = Messaggio.getMessaggi();
-        Messaggio[] arr = list.toArray( new Messaggio[list.size()] );
-        for( Messaggio m: arr) {
-            m.setToStringF("%lingua%, %testoCif%");
-        }
-        jList1.setListData(arr);
         
-    }
-
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -130,8 +133,8 @@ public class MessaggiSelector extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        Messaggio m = (Messaggio)jList1.getSelectedValue();
-        this.syncBuffer.put(m);
+        T selected = (T)jList1.getSelectedValue();
+        this.syncBuffer.put(selected);
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -152,33 +155,25 @@ public class MessaggiSelector extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GenericSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GenericSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GenericSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(MessaggiSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GenericSelector.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
-
         
-                
-        final SynchronizedBuffer b = new SynchronizedBuffer();
-
-        new Thread( new Runnable() {
-            public void run() {
-                MessaggiSelector listaMessaggiCifrati = new MessaggiSelector(b);
-                listaMessaggiCifrati.setVisible(true);
-            }
-        } ).start();
+        List<String> list = new java.util.ArrayList<>();
+        list.add("A");
+        list.add("B");
+        list.add("C");
+        list.add("D");
         
         
-        System.out.println( b.get() );
+        System.out.println( GenericSelector.selectOptions(list) );
     }
-
-
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

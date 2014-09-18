@@ -1,8 +1,7 @@
 package model.spia;
 
 
-import GUI.spia.GenericSelector;
-import GUI.spia.MessaggiSelector;
+import GUI.GenericSelector;
 import java.util.List;
 import model.Messaggio;
 
