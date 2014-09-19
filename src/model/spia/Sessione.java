@@ -30,42 +30,46 @@ public class Sessione implements Serializable {
     
     public static class Properties extends java.util.Hashtable<String, Object> {}
     
+    public static Sessione recuperaSessione( Studente s ) throws SQLException {
+      Sessione result = null;
+      ArrayList<String> optionList = new ArrayList<>();
+      
+      //seleziona la key di una sessione salvata
+      DbManager db = DbManager.getInstance();
+      Query q = db.createQuery("SELECT `key` FROM `Sessione` WHERE `userId` = ?");
+      q.setString ( 1, s.getId() );
+      QueryResult rs = db.execute(q);
+      while( rs.next() ){
+          optionList.add( rs.getString("key") );
+      }
+      String key = GenericSelector.selectOptions( optionList );
+
+      //In base alla key scelta deserializza la Sessione dal database
+      Query u = db.createQuery("SELECT `sessione` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
+      u.setString ( 1, s.getId() );
+      u.setString ( 2, key );
+      QueryResult qr = db.execute(u);
+
+      if( qr.next() ) {
+        result = qr.getObject("sessione", Sessione.class);
+      }
+      return result;
+    }
+    
     public static Sessione startNewSessione() {
         List<Messaggio> options = Messaggio.getMessaggi();
         for( Messaggio m: options ) {
             m.setToStringF("%lingua%, %testoCif%");
         }
-        return new Sessione( GenericSelector.selectOptions( options ) );
+        Messaggio selectedMsg = GenericSelector.selectOptions( options );
+        Sessione s = new Sessione( selectedMsg );
+        s.start();
+        return s;
     }
     
-    public static Sessione restoreSessione() {
-        Sessione result = null;
-        ArrayList<String> optionList = new ArrayList<>();
-        try{
-            //seleziona la key di una sessione salvata
-            DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT `key` FROM `Sessione` WHERE `userId` = ?");
-            q.setString ( 1, Studente.getLoggato().getId() );
-            QueryResult rs = db.execute(q);
-            while( rs.next() ){
-                optionList.add( rs.getString("key") );
-            }
-            String key = GenericSelector.selectOptions( optionList );
-            
-            //In base alla key scelta deserializza la Sessione dal database
-            Query u = db.createQuery("SELECT `sessione` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
-            u.setString ( 1, Studente.getLoggato().getId() );
-            u.setString ( 2, key );
-            QueryResult qr = db.execute(u);
-            
-            if( qr.next() ) {
-              result = qr.getObject("sessione", Sessione.class);
-            }
-        }
-        catch (SQLException ex){
-            throw new RuntimeException( ex.getMessage(), ex );
-        }
-        return result;
+    public static Sessione restoreSessione( Sessione s ) {
+        s.start();
+        return s;
     }
     
     public static void deleteSessione( Sessione sessione ) {
@@ -123,6 +127,13 @@ public class Sessione implements Serializable {
     }
     
     public void start() {
-        //DO CODE
+        ArrayList<String> nomiStrumenti = new ArrayList<>();
+        nomiStrumenti.add("RipristinaSessione");
+        nomiStrumenti.add("AnalisiDelleFrequenze");
+        nomiStrumenti.add("BruteForce");
+        
+        String nomeStrumentoScelto = GenericSelector.selectOptions(nomiStrumenti);
+        
+        System.out.println( "Hai scelto lo strumento "+nomeStrumentoScelto);
     }
 }

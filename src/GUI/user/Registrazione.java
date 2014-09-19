@@ -129,7 +129,7 @@ public class Registrazione extends javax.swing.JFrame {
         System.out.println(jTextField1.getText());
         System.out.println(jTextField2.getText());
         /*mancano controlli sulla password*/
-        new Studente(jTextField1.getText(), jTextField2.getText(), true).registra();
+       Studente.registra(jTextField1.getText(), jTextField2.getText());
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed

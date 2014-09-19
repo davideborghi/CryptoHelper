@@ -17,6 +17,7 @@ import javax.swing.ListModel;
 import model.user.Proposta;
 import model.user.SistemaCifratura;
 import model.Studente;
+import model.UserInfo;
 
 /**
  *
@@ -29,7 +30,7 @@ public class PropostaSistemaDiCifratura extends javax.swing.JFrame {
      */
     public PropostaSistemaDiCifratura() {
         initComponents();
-        Studente[] s = Controller.recuperaUtenti();
+        UserInfo[] s = Controller.recuperaUtenti();
         jList2.setListData(s);
     }
 

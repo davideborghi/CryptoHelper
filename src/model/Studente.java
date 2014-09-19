@@ -20,6 +20,9 @@ public class Studente {
   
     private static Studente loggato = null;
     
+    public static void setLoggato( Studente s ) {
+      loggato = s;
+    }
     public static Studente getLoggato() {
       return loggato;
     }
@@ -35,11 +38,6 @@ public class Studente {
         this.login = user;
     }
     
-    public Studente(String id, String user){
-        this.id = id;
-        this.login = user;
-    }
-    
     public Studente(String nome, String cognome, String id, String user, String password){
         this.login = user;
         this.pwd = password;
@@ -48,7 +46,7 @@ public class Studente {
         this.id = id;
     }
     
-    public Studente(String user, String password, boolean b){
+    public Studente(String user, String password){
         this.login = user;
         this.pwd = password;
     }
@@ -62,20 +60,25 @@ public class Studente {
         this.id = s;
         return true;*/
         try{
-            DbManager db = DbManager0.getInstance();
-            Query q = db.createQuery("SELECT * FROM user WHERE username = '"+this.login+"' and password = '"+this.pwd+"';");
+            DbManager db = DbManager.getInstance();
+            Query q = db.createQuery("SELECT * FROM user WHERE username = ? and password = ?");
+            q.setString(1, this.getLogin());
+            q.setString(2, this.getPwd());
+            
             QueryResult rs = db.execute(q);
-            rs.next();
-            if(rs.wasNull()) return false;
-            this.id = rs.getInt("id")+"";
+            if( rs.next() ) {
+              this.id = rs.getString("id");
             return true;
+            } else {
+              return false;
+            }
         }
          catch(SQLException ex){
             throw new RuntimeException( ex.getMessage(), ex );
         }
     }
     
-    public boolean registra(){
+    public static boolean registra(String nome, String password){
         
         /*DbManager db = connect();
         if (!db.eseguiAggiornamento("INSERT INTO `cryptohelper`.`user` (`username`, `password`, `nome`, `cognome`) VALUES ('" +this.login+"', '"+this.pwd+"', NULL, NULL);")) {
@@ -86,8 +89,8 @@ public class Studente {
         // Ora chiudo la connessione col Database:
         db.disconnetti();*/
         try{
-            DbManager db = DbManager0.getInstance();
-            Query q = db.createQuery("INSERT INTO `cryptohelper`.`user` (`username`, `password`, `nome`, `cognome`) VALUES ('" +this.login+"', '"+this.pwd+"', NULL, NULL);");
+            DbManager db = DbManager.getInstance();
+            Query q = db.createQuery("INSERT INTO `cryptohelper`.`user` (`username`, `password`, `nome`, `cognome`) VALUES ('" +nome+"', '"+password+"', NULL, NULL);");
             q.executeUpdate();
         }
         catch (SQLException ex){
@@ -101,6 +104,41 @@ public class Studente {
     }
     
     public String toString(){
-        return this.login;
+        return this.getLogin();
     }
+
+  /**
+   * @return the nome
+   */
+  public String getNome() {
+    return nome;
+  }
+
+  /**
+   * @return the cognome
+   */
+  public String getCognome() {
+    return cognome;
+  }
+
+  /**
+   * @return the login
+   */
+  public String getLogin() {
+    return login;
+  }
+
+  /**
+   * @return the pwd
+   */
+  public String getPwd() {
+    return pwd;
+  }
+
+  /**
+   * @return the DbManager0
+   */
+  public DbManager getDbManager0() {
+    return DbManager0;
+  }
 }

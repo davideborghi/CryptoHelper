@@ -5,22 +5,15 @@
  */
 
 package controller;
-import model.user.Proposta;
-//import Clmodelession;
-//import Clasmodeldente;
-//import Classemodelnfo;
-import db.DbManager;
 import db.DbManager;
 import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
-import model.user.PropostaConfermata;
 import model.Session;
-import model.user.SistemaCifratura;
 import model.Studente;
 import model.UserInfo;
+import model.user.Proposta;
 /**
  *
  * @author MASTER
@@ -99,8 +92,8 @@ public class Controller {
     
     
     
-    public static Studente[] recuperaUtenti(){
-        ArrayList<Studente> result = new ArrayList<>();
+    public static UserInfo[] recuperaUtenti(){
+        ArrayList<UserInfo> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM user where username <> '" + Session.getLoggedUser() + "'");
@@ -108,12 +101,12 @@ public class Controller {
             while( rs.next() ) {
                 String id = rs.getString(1);
                 String user = rs.getString(2);
-                result.add( new Studente( id, user  ) );
+                result.add( new UserInfo( id, user  ) );
             }
         }
         catch(SQLException ex){
             throw new RuntimeException( ex.getMessage(), ex );
         }
-        return result.toArray( new Studente[result.size()] );
+        return result.toArray( new UserInfo[result.size()] );
     }
 }
