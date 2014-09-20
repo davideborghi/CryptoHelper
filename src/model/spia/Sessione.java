@@ -10,6 +10,8 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.Messaggio;
 import model.Studente;
 
@@ -122,8 +124,20 @@ public class Sessione implements Serializable {
       return this.messaggio;
     }
     
-    public void start() {
+    public synchronized void start() {
         ArrayList<String> nomiStrumenti = new ArrayList<>();
-        new CicloDiAnalisi( this ).setVisible(true);
+        final Sessione self = this;
+        
+        new Thread( new Runnable() {
+          public void run() {
+            new CicloDiAnalisi( self ).setVisible(true);
+          }
+        }).start();
+      try {
+        wait();
+      } catch (InterruptedException ex) {
+        throw new RuntimeException( ex.getMessage(), ex );
+      }
+      System.out.println("SALVARE SESSIONE");
     }
 }
