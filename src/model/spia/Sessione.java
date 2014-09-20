@@ -133,7 +133,7 @@ public class Sessione implements Serializable {
         nomiStrumenti.add("BruteForce");
         
         String nomeStrumentoScelto = GenericSelector.selectOptions(nomiStrumenti);
-        
+        //CHECK
         System.out.println( "Hai scelto lo strumento "+nomeStrumentoScelto);
     }
 }
