@@ -124,7 +124,6 @@ public class Sessione implements Serializable {
     
     public void start() {
         ArrayList<String> nomiStrumenti = new ArrayList<>();
-        
         new CicloDiAnalisi( this ).setVisible(true);
     }
 }
