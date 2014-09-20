@@ -6,6 +6,7 @@
 
 package GUI.spia;
 
+import model.spia.Ipotesi;
 import model.spia.Sessione;
 
 /**
@@ -19,6 +20,13 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
      */
     public CicloDiAnalisi( Sessione s ) {
         this.sessione = s;
+        String str;
+        Ipotesi ip;
+        if ((ip =this.sessione.getIpotesiCorrente())== null){
+            str = s.getMessaggio().getTestoCifrato();
+            jTextArea1.setText(str);   
+        }
+        else jTextArea1.setText(ip.getMessaggioParzialmenteDecifrato());
         initComponents();
     }
 

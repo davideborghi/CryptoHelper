@@ -161,8 +161,8 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
     
     public void cifra(){
         //SistemaCifratura.load(this.mittente, this.destinatario);
-        this.sdc.calcolaMappatura(); //sdc ha ora un oggetto mappatura
-        this.testoCifrato = Cifratore.cifra(this.testo, this.sdc.getMappatura()); 
+        this.getSdc().calcolaMappatura(); //sdc ha ora un oggetto mappatura
+        this.testoCifrato = Cifratore.cifra(this.getTesto(), this.getSdc().getMappatura()); 
     }
     
     public boolean isBozza(){
@@ -180,7 +180,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         return true;*/
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.mittente.getId()+"', '"+this.destinatario.getId()+"', '" + this.testo + "', '" + this.testoCifrato + "' , '" + this.lingua + "', 'titoloDiProva', " + this.bozza + ", false);");
+            Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.getMittente().getId()+"', '"+this.getDestinatario().getId()+"', '" + this.getTesto() + "', '" + this.getTestoCifrato() + "' , '" + this.getLingua() + "', 'titoloDiProva', " + this.isBozza() + ", false);");
             q.executeUpdate();
         }
         catch (SQLException ex){
@@ -195,17 +195,17 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
     
     private String toStringF = "Messaggio in lingua: %lingua% inviato da utente con id %mittenteID% ad utente con id %destinatario% e testo: %testo%";
     public String setToStringF( String f ) {
-        String result = toStringF;
+        String result = getToStringF();
         this.toStringF = f;
         return result;
     }
     public String toString(){
-        String result = toStringF;
-        result = result.replaceAll("%lingua%", lingua);
-        result = result.replaceAll("%mittenteID%", mittente.getId());
-        result = result.replaceAll("%destinatarioID%", destinatario.getId());
-        result = result.replaceAll("%testo%", testo);
-        result = result.replaceAll("%testoCif", testoCifrato);
+        String result = getToStringF();
+        result = result.replaceAll("%lingua%", getLingua());
+        result = result.replaceAll("%mittenteID%", getMittente().getId());
+        result = result.replaceAll("%destinatarioID%", getDestinatario().getId());
+        result = result.replaceAll("%testo%", getTesto());
+        result = result.replaceAll("%testoCif", getTestoCifrato());
         return result; 
     }
     
@@ -213,6 +213,62 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         this.setBozza(false);
         this.save();
         return true;
+    }
+
+    /**
+     * @return the id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * @return the mittente
+     */
+    public UserInfo getMittente() {
+        return mittente;
+    }
+
+    /**
+     * @return the destinatario
+     */
+    public UserInfo getDestinatario() {
+        return destinatario;
+    }
+
+    /**
+     * @return the testo
+     */
+    public String getTesto() {
+        return testo;
+    }
+
+    /**
+     * @return the testoCifrato
+     */
+    public String getTestoCifrato() {
+        return testoCifrato;
+    }
+
+    /**
+     * @return the lingua
+     */
+    public String getLingua() {
+        return lingua;
+    }
+
+    /**
+     * @return the titolo
+     */
+    public String getTitolo() {
+        return titolo;
+    }
+
+    /**
+     * @return the toStringF
+     */
+    public String getToStringF() {
+        return toStringF;
     }
     
 }
