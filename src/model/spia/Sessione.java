@@ -2,6 +2,7 @@ package model.spia;
 
 
 import GUI.GenericSelector;
+import GUI.spia.CicloDiAnalisi;
 import db.DbManager;
 import db.Query;
 import db.QueryResult;
@@ -128,12 +129,7 @@ public class Sessione implements Serializable {
     
     public void start() {
         ArrayList<String> nomiStrumenti = new ArrayList<>();
-        nomiStrumenti.add("RipristinaSessione");
-        nomiStrumenti.add("AnalisiDelleFrequenze");
-        nomiStrumenti.add("BruteForce");
         
-        String nomeStrumentoScelto = GenericSelector.selectOptions(nomiStrumenti);
-        //CHECK
-        System.out.println( "Hai scelto lo strumento "+nomeStrumentoScelto);
+        new CicloDiAnalisi( this ).setVisible(true);
     }
 }
