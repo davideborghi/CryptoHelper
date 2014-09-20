@@ -12,7 +12,7 @@ import java.util.HashMap;
 public class AnalisiFrequenze {
     private HashMap<Character, Integer> table;
     private int msgLength;
-    public void start (String msg){
+    public void start (String msg) {
         table = new HashMap<Character, Integer>();
 //        msg = msg.toLowerCase();
         msg = msg.replaceAll("\\s", ""); /*rimuove gli spazi*/

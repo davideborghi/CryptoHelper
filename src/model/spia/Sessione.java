@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Messaggio;
@@ -23,7 +24,7 @@ import model.Studente;
  *
  * @author user
  */
-public class Sessione implements Serializable {
+public class Sessione extends Observable implements Serializable {
 
   public static class Properties extends java.util.Hashtable<String, Object> {
   }
@@ -108,6 +109,9 @@ public class Sessione implements Serializable {
   public Sessione(Messaggio m) {
     this.messaggio = m;
     this.key = new java.sql.Timestamp(new java.util.Date().getTime()).toString();
+    
+    this.root = new Ipotesi("radice", m.getTestoCifrato());
+    this.ipCorrente = this.root;
   }
 
   public Ipotesi getIpotesiRadice() {
@@ -122,10 +126,14 @@ public class Sessione implements Serializable {
     return this.messaggio;
   }
 
+  public void add( Ipotesi nuova ) {
+    this.ipCorrente.add( nuova );
+    ipCorrente = nuova;
+    
+    this.setChanged();
+    this.notifyObservers();
+  }
   public synchronized void start() {
-
-    this.root = new Ipotesi("nessuna_sostituzione", this.messaggio.getTestoCifrato());
-    this.ipCorrente = this.root;
 
     final Sessione self = this;
     new Thread(new Runnable() {

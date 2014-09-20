@@ -5,14 +5,20 @@
  */
 package GUI.spia;
 
+import GUI.PopUpViewer;
+import java.util.Observable;
+import java.util.Observer;
+import javax.swing.JFrame;
+import javax.swing.tree.DefaultTreeModel;
 import model.spia.Ipotesi;
 import model.spia.Sessione;
+import model.spia.supportTools.analisiFrequenze.AnalisiFrequenze;
 
 /**
  *
  * @author davide
  */
-public class CicloDiAnalisi extends javax.swing.JFrame {
+public class CicloDiAnalisi extends javax.swing.JFrame implements Observer {
 
   public CicloDiAnalisi() {
     initComponents();
@@ -24,14 +30,10 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
   public CicloDiAnalisi(Sessione s) {
     this();
     this.sessione = s;
-    String str;
-    Ipotesi ip;
-    if ((ip = this.sessione.getIpotesiCorrente()) == null) {
-      str = s.getMessaggio().getTestoCifrato();
-      jTextArea1.setText(str);
-    } else {
-      jTextArea1.setText(ip.getMessaggioParzialmenteDecifrato());
-    }
+    
+    updateIpotesi();
+    
+    s.addObserver( this );
   }
 
   /**
@@ -49,6 +51,8 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
     jScrollPane1 = new javax.swing.JScrollPane();
     jTextArea1 = new javax.swing.JTextArea();
     jButton3 = new javax.swing.JButton();
+    jScrollPane2 = new javax.swing.JScrollPane();
+    jTree1 = new javax.swing.JTree();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -81,26 +85,30 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
       }
     });
 
+    jScrollPane2.setViewportView(jTree1);
+
     javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
     getContentPane().setLayout(layout);
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addGroup(layout.createSequentialGroup()
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+            .addGap(57, 57, 57)
+            .addComponent(jButton2)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jButton1))
+          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
             .addGap(74, 74, 74)
             .addComponent(jLabel2)
             .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton3))
-          .addGroup(layout.createSequentialGroup()
+          .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
             .addContainerGap()
-            .addComponent(jScrollPane1))
-          .addGroup(layout.createSequentialGroup()
-            .addGap(57, 57, 57)
-            .addComponent(jButton2)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 9, Short.MAX_VALUE)
-            .addComponent(jButton1)))
-        .addGap(52, 52, 52))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        .addGap(18, 18, 18)
+        .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 188, Short.MAX_VALUE)
+        .addContainerGap())
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -108,30 +116,38 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
         .addContainerGap()
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
           .addGroup(layout.createSequentialGroup()
-            .addComponent(jLabel2)
-            .addGap(38, 38, 38))
-          .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-            .addComponent(jButton3)
-            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)))
-        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE)
-        .addGap(18, 18, 18)
-        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-          .addComponent(jButton1)
-          .addComponent(jButton2))
-        .addGap(35, 35, 35))
+            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 285, javax.swing.GroupLayout.PREFERRED_SIZE)
+            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+          .addGroup(layout.createSequentialGroup()
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addGroup(layout.createSequentialGroup()
+                .addComponent(jLabel2)
+                .addGap(24, 24, 24))
+              .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addComponent(jButton3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 195, Short.MAX_VALUE)
+            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+              .addComponent(jButton2)
+              .addComponent(jButton1))
+            .addGap(35, 35, 35))))
     );
 
     pack();
   }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      // TODO add your handling code here:
+      AnalisiFrequenze a = new AnalisiFrequenze();
+      a.start( this.sessione.getIpotesiCorrente().getMessaggioParzialmenteDecifrato() );
+      new PopUpViewer(a.toString()).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+      final Sessione s = this.sessione;
       new Thread(new Runnable() {
         public void run() {
-          new SostituzioneLettera().setVisible(true);
+          new SostituzioneLettera( s ).setVisible(true);
         }
       }).start();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -151,6 +167,26 @@ public class CicloDiAnalisi extends javax.swing.JFrame {
   private javax.swing.JButton jButton3;
   private javax.swing.JLabel jLabel2;
   private javax.swing.JScrollPane jScrollPane1;
+  private javax.swing.JScrollPane jScrollPane2;
   private javax.swing.JTextArea jTextArea1;
+  private javax.swing.JTree jTree1;
   // End of variables declaration//GEN-END:variables
+
+  private void updateIpotesi() {
+    Sessione s = this.sessione;
+    Ipotesi ip = s.getIpotesiCorrente();
+    
+    jTextArea1.setText(ip.getMessaggioParzialmenteDecifrato());
+    
+    DefaultTreeModel treeModel = new DefaultTreeModel( s.getIpotesiRadice() );
+    jTree1.setModel( treeModel );
+    
+    for( int i = 0; i < jTree1.getRowCount(); i++ ) {
+      jTree1.expandRow(i);
+    }
+  }
+  @Override
+  public void update(Observable o, Object arg) {
+    updateIpotesi();
+  }
 }
