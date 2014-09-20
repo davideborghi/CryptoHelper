@@ -15,11 +15,14 @@ import javax.swing.tree.TreeNode;
  * @author user
  */
 public class Ipotesi extends javax.swing.tree.DefaultMutableTreeNode {
-
-    private char cifrata;
-    private char inChiaro;
-    
+  
+    private String key;
     private String messaggioParzialmenteDecifrato;
+    
+    public Ipotesi( String key, String messaggioParzialmenteDecifrato ) {
+      this.key = key;
+      this.messaggioParzialmenteDecifrato = messaggioParzialmenteDecifrato;
+    }
     
     public String getMessaggioParzialmenteDecifrato() {
         return this.messaggioParzialmenteDecifrato;
@@ -31,6 +34,10 @@ public class Ipotesi extends javax.swing.tree.DefaultMutableTreeNode {
     
     public void remove( Ipotesi p ) {
         super.remove( p );
+    }
+    
+    public String toString() {
+      return this.key;
     }
     
 }
