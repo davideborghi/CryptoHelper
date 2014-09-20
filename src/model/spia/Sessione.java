@@ -10,8 +10,6 @@ import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Messaggio;
 import model.Studente;
 
@@ -106,15 +104,12 @@ public class Sessione implements Serializable {
     private Ipotesi root;
     private Ipotesi ipCorrente;
     
-    private Properties properties;
+    private Messaggio messaggio;
     
-    public Sessione( Properties p ) {
-        this.properties = p;
-        this.key = new java.sql.Timestamp( new java.util.Date().getTime() ).toString();
-    }
+    
     public Sessione( Messaggio m ) {
-        this( new Properties() );
-        this.properties.put("messaggio", m);
+        this.messaggio = m;
+        this.key = new java.sql.Timestamp( new java.util.Date().getTime() ).toString();
     }
     
     public Ipotesi getIpotesiRadice() {
@@ -123,8 +118,8 @@ public class Sessione implements Serializable {
     public Ipotesi getIpotesiCorrente() {
         return ipCorrente;
     }
-    public Properties getProperties() {
-        return properties;
+    public Messaggio getMessaggio() {
+      return this.messaggio;
     }
     
     public void start() {
