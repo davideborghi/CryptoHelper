@@ -36,8 +36,8 @@ public class UserInfo {
             QueryResult rs = db.execute(q);
             rs.next();
             this.username = rs.getString(2);
-            this.nome = rs.getString(2);
-            this.cognome = rs.getString(2);
+            this.nome = rs.getString(4);
+            this.cognome = rs.getString(5);
         }
          catch(SQLException ex){
             throw new RuntimeException( ex.getMessage(), ex );
