@@ -4,10 +4,10 @@
  * and open the template in the editor.
  */
 
-package test.model.spia.supportTools;
+package test.model.spia;
 
-import model.spia.supportTools.analisiFrequenze.AnalisiFrequenze;
-import model.spia.supportTools.analisiFrequenze.Replacer;
+import model.spia.AnalisiFrequenze;
+import model.spia.SostituzioneSemplice;
 
 /**
  *
@@ -22,7 +22,7 @@ public class TesterAnalisiFrequenze {
         AnalisiFrequenze tool = new AnalisiFrequenze();
         String msg = "hello analisi frequenze";
         tool.start(msg);
-        Replacer tool1 = new Replacer();
+        SostituzioneSemplice tool1 = new SostituzioneSemplice();
         String edit = msg;
         edit = tool1.start(edit, 'e', 'F');
         System.out.println(msg + "\nSostituzione e con F \n" + edit);

@@ -9,7 +9,7 @@ package GUI.spia;
 import java.util.Observable;
 import model.spia.Ipotesi;
 import model.spia.Sessione;
-import model.spia.supportTools.analisiFrequenze.Replacer;
+import model.spia.SostituzioneSemplice;
 
 /**
  *
@@ -127,7 +127,7 @@ public class SostituzioneLettera extends javax.swing.JFrame {
         char chiaro = jTextField2.getText().charAt(0);
         
         String msg = this.sessione.getIpotesiCorrente().getMessaggioParzialmenteDecifrato();
-        String newMsg = new Replacer().start(msg, crypt, chiaro);
+        String newMsg = new SostituzioneSemplice().start(msg, crypt, chiaro);
         
         Ipotesi nuova = new Ipotesi( crypt+" -> "+chiaro, newMsg);
         this.sessione.add(nuova);

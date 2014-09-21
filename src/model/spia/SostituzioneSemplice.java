@@ -4,13 +4,13 @@
  * and open the template in the editor.
  */
 
-package model.spia.supportTools.analisiFrequenze;
+package model.spia;
 
 /**
  *
  * @author davide
  */
-public class Replacer {
+public class SostituzioneSemplice {
     public String start(String msg, char from, char to){
         to = Character.toUpperCase(to);
         msg = msg.replace(from, to);

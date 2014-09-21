@@ -205,7 +205,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
         result = result.replaceAll("%mittenteID%", getMittente().getId());
         result = result.replaceAll("%destinatarioID%", getDestinatario().getId());
         result = result.replaceAll("%testo%", getTesto());
-        result = result.replaceAll("%testoCif", getTestoCifrato());
+        result = result.replaceAll("%testoCif%", getTestoCifrato());
         return result; 
     }
     

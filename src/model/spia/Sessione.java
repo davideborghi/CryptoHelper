@@ -121,6 +121,11 @@ public class Sessione extends Observable implements Serializable {
   public Ipotesi getIpotesiCorrente() {
     return ipCorrente;
   }
+  public void setIpotesiCorrente( Ipotesi ip ) {
+    this.ipCorrente = ip;
+    this.setChanged();
+    this.notifyObservers();
+  }
 
   public Messaggio getMessaggio() {
     return this.messaggio;
