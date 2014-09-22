@@ -26,10 +26,6 @@ public class Utente_Regolamentare extends javax.swing.JFrame {
      */
     public Utente_Regolamentare() {
         initComponents();
-        /*try{
-            Thread.sleep(1000);
-        }
-        catch(Exception e){}*/
         Proposta[] p = CommunicationController.getProposte(Studente.getLoggato().getId());
         if(p.length > 0){
             NuoveProposte n = new NuoveProposte(p);
