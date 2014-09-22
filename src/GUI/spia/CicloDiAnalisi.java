@@ -8,16 +8,17 @@ package GUI.spia;
 import GUI.PopUpViewer;
 import java.util.Observable;
 import java.util.Observer;
-import javax.swing.JFrame;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.TreeNode;
 import javax.swing.tree.TreePath;
+import model.spia.AnalisiFrequenze;
 import model.spia.Ipotesi;
 import model.spia.Sessione;
-import model.spia.AnalisiFrequenze;
+import model.spia.SostituzioneSemplice;
+import model.spia.StrumentoDiManipolazione;
+import model.spia.StrumentoDiSupporto;
+import model.spia.RipristinaIpotesiPrecedente;
 
 /**
  *
@@ -154,29 +155,28 @@ public class CicloDiAnalisi extends javax.swing.JFrame implements Observer {
   }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-      AnalisiFrequenze a = new AnalisiFrequenze();
+      StrumentoDiSupporto a = new AnalisiFrequenze();
+      
       a.start( this.sessione.getIpotesiCorrente().getMessaggioParzialmenteDecifrato() );
       new PopUpViewer(a.toString()).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-      final Sessione s = this.sessione;
-      new Thread(new Runnable() {
-        public void run() {
-          new SostituzioneLettera( s ).setVisible(true);
-        }
-      }).start();
+      StrumentoDiManipolazione s = new SostituzioneSemplice();
+      s.elabora( this.sessione );
     }//GEN-LAST:event_jButton2ActionPerformed
 
   private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
     this.dispose();
     synchronized( this.sessione ) {
+      //torna il controllo a Sessione.start();
       this.sessione.notify();
     }
   }//GEN-LAST:event_jButton3ActionPerformed
 
   private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-    new RipristinaIpotesiPrecedente( this.sessione ).setVisible(true);
+    StrumentoDiManipolazione s = new  RipristinaIpotesiPrecedente();
+    s.elabora( this.sessione );
   }//GEN-LAST:event_jButton4ActionPerformed
 
   private Sessione sessione;

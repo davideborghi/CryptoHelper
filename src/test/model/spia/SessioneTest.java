@@ -14,7 +14,7 @@ import model.spia.Sessione;
  */
 public class SessioneTest {
     public static void main( String[] args ) {
-        Sessione s = Sessione.startNewSessione();
+        Sessione s = Sessione.startNewSessione( null );
         System.out.println(s);
     }
 }

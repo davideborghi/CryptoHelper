@@ -1,6 +1,7 @@
 package model.spia;
 
 
+import java.io.Serializable;
 import java.util.Enumeration;
 import javax.swing.tree.TreeNode;
 
@@ -14,7 +15,7 @@ import javax.swing.tree.TreeNode;
  *
  * @author user
  */
-public class Ipotesi extends javax.swing.tree.DefaultMutableTreeNode {
+public class Ipotesi extends javax.swing.tree.DefaultMutableTreeNode implements Serializable {
   
     private String key;
     private String messaggioParzialmenteDecifrato;

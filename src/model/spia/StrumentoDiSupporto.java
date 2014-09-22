@@ -14,6 +14,8 @@ import model.Messaggio;
  *
  * @author user
  */
-public interface SistemaDiSupporto {
-    public Ipotesi start(Ipotesi ipCorrente, Messaggio messaggio);
+public interface StrumentoDiSupporto {
+    public void start(String messaggio);
+    @Override
+    public String toString();
 }

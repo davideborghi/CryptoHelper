@@ -28,7 +28,7 @@ public class Spia extends Studente {
     }
     
     public Sessione startNewSessione() {
-      Sessione s = Sessione.startNewSessione();
+      Sessione s = Sessione.startNewSessione( this );
       return s;
     }
     

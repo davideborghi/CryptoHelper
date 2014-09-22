@@ -24,7 +24,7 @@ public class TesterAnalisiFrequenze {
         tool.start(msg);
         SostituzioneSemplice tool1 = new SostituzioneSemplice();
         String edit = msg;
-        edit = tool1.start(edit, 'e', 'F');
+        edit = tool1.sostituisci(edit, 'e', 'F');
         System.out.println(msg + "\nSostituzione e con F \n" + edit);
         tool.start(edit);
         // TODO code application logic here

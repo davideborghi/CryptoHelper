@@ -6,14 +6,42 @@
 
 package model.spia;
 
+import GUI.spia.SostituzioneLettera;
+
+
 /**
  *
  * @author davide
  */
-public class SostituzioneSemplice {
-    public String start(String msg, char from, char to){
+public class SostituzioneSemplice implements StrumentoDiManipolazione {
+  private static String sostituisci(String msg, char from, char to){
         to = Character.toUpperCase(to);
         msg = msg.replace(from, to);
         return msg;
     }
+
+  @Override
+  public void elabora(Sessione sessione) {
+    final Sessione s = sessione;
+    new Thread( new Runnable() {
+      @Override
+      public void run() {
+        char[] array = SostituzioneLettera.getCaratteriDaSostituire();
+
+        if( array != null && array.length == 2 ) {
+          char crypt = array[0];
+          char plain = array[1];
+
+          Ipotesi ipotesiCorrente = s.getIpotesiCorrente();
+          String messaggio = ipotesiCorrente.getMessaggioParzialmenteDecifrato();
+
+          messaggio = sostituisci(messaggio, crypt, plain);
+
+          Ipotesi nuova = new Ipotesi( crypt+" -> "+plain, messaggio);
+          s.add(nuova);
+        }
+      }
+    }).start();
+  }
+  
 }

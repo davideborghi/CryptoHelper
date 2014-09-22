@@ -6,6 +6,8 @@
 
 package GUI.spia;
 
+import GUI.GenericSelector;
+import java.util.List;
 import java.util.Observable;
 import model.spia.Ipotesi;
 import model.spia.Sessione;
@@ -17,17 +19,64 @@ import model.spia.SostituzioneSemplice;
  */
 public class SostituzioneLettera extends javax.swing.JFrame {
   
+    public static char[] getCaratteriDaSostituire() {
+      
+      final SynchronizedBuffer<char[]> buff = new SynchronizedBuffer<>();
+
+      new Thread(new Runnable() {
+        @Override
+        public void run() {
+          SostituzioneLettera frame = new SostituzioneLettera(buff);
+          frame.setVisible(true);
+        }
+      }).start();
+
+      return buff.get();
+    }
     
+    //<editor-fold desc="SynchronizedBuffer">
+    private static class SynchronizedBuffer<T> {
+
+    private T contents;
+    private boolean available = false;
+
+    public synchronized T get() {
+      while (available == false) {
+        try {
+          wait();
+        } catch (InterruptedException e) {
+        }
+      }
+      available = false;
+      notifyAll();
+      return contents;
+    }
+
+    public synchronized void put(T value) {
+      while (available == true) {
+        try {
+          wait();
+        } catch (InterruptedException e) {
+        }
+      }
+      contents = value;
+      available = true;
+      notifyAll();
+    }
+  }
+  //</editor-fold>
+    
+    private SynchronizedBuffer<char[]> buff;
     /**
      * Creates new form SostituzioneLettera
      */
-    public SostituzioneLettera() {
+    private SostituzioneLettera() {
         initComponents();
     }
-    private Sessione sessione;
-  SostituzioneLettera( Sessione s ) {
+    
+    private SostituzioneLettera( SynchronizedBuffer<char[]> buff ) {
     this();
-    this.sessione = s;
+    this.buff = buff;
   }
 
     /**
@@ -47,9 +96,9 @@ public class SostituzioneLettera extends javax.swing.JFrame {
     jButton1 = new javax.swing.JButton();
     jLabel4 = new javax.swing.JLabel();
 
-    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
     jLabel1.setText("Sostituisci la lettera:");
+
+    setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
     jLabel2.setText("Trasforma la lettera: ");
 
@@ -80,9 +129,6 @@ public class SostituzioneLettera extends javax.swing.JFrame {
           .addComponent(jButton1)
           .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-              .addGap(144, 144, 144)
-              .addComponent(jLabel1))
-            .addGroup(layout.createSequentialGroup()
               .addGap(47, 47, 47)
               .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                 .addGroup(layout.createSequentialGroup()
@@ -101,12 +147,9 @@ public class SostituzioneLettera extends javax.swing.JFrame {
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addGap(21, 21, 21)
+        .addGap(65, 65, 65)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-          .addGroup(layout.createSequentialGroup()
-            .addComponent(jLabel1)
-            .addGap(37, 37, 37)
-            .addComponent(jLabel2))
+          .addComponent(jLabel2)
           .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addGap(39, 39, 39)
         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -123,15 +166,12 @@ public class SostituzioneLettera extends javax.swing.JFrame {
   }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        char crypt = jTextField1.getText().charAt(0);
-        char chiaro = jTextField2.getText().charAt(0);
+        char[] array = new char[2];
         
-        String msg = this.sessione.getIpotesiCorrente().getMessaggioParzialmenteDecifrato();
-        String newMsg = new SostituzioneSemplice().start(msg, crypt, chiaro);
-        
-        Ipotesi nuova = new Ipotesi( crypt+" -> "+chiaro, newMsg);
-        this.sessione.add(nuova);
-        
+        array[0] = jTextField1.getText().charAt(0);
+        array[1] = jTextField2.getText().charAt(0);
+                
+        this.buff.put( array );
         this.dispose();
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -139,41 +179,12 @@ public class SostituzioneLettera extends javax.swing.JFrame {
     // TODO add your handling code here:
   }//GEN-LAST:event_jTextField1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SostituzioneLettera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SostituzioneLettera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SostituzioneLettera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SostituzioneLettera.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new SostituzioneLettera().setVisible(true);
-            }
-        });
-    }
-
+  public static void main( String[] args ) {
+    char[] r = getCaratteriDaSostituire();
+    System.out.println(r[0]+" "+r[1]);
+  }
+  
   // Variables declaration - do not modify//GEN-BEGIN:variables
   private javax.swing.JButton jButton1;
   private javax.swing.JLabel jLabel1;

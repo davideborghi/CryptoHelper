@@ -9,17 +9,19 @@ import java.util.HashMap;
  *
  * @author davide
  */
-public class AnalisiFrequenze {
+public class AnalisiFrequenze implements StrumentoDiSupporto {
     private HashMap<Character, Integer> table;
     private int msgLength;
-    public void start (String msg) {
+    
+    @Override
+    public void start (String messaggio) {
         table = new HashMap<Character, Integer>();
 //        msg = msg.toLowerCase();
-        msg = msg.replaceAll("\\s", ""); /*rimuove gli spazi*/
-        this. msgLength = msg.length();
-        System.out.println(msg);
-        for(int i = 0; i < msg.length(); i++){
-            Character c = msg.charAt(i);
+        messaggio = messaggio.replaceAll("\\s", ""); /*rimuove gli spazi*/
+        this. msgLength = messaggio.length();
+        System.out.println(messaggio);
+        for(int i = 0; i < messaggio.length(); i++){
+            Character c = messaggio.charAt(i);
             if (table.containsKey(c)){
                 Integer occorrenze = (Integer)table.get(c)+1;
                 table.put(c, occorrenze);
@@ -30,6 +32,7 @@ public class AnalisiFrequenze {
         }
         System.out.println(/*table + " size " + */this.toString());
     }
+    @Override
     public String toString() {
         String frequencyTable = "Numero lettere nel messaggio " + this.getMsgLength()+"\n";
         for(Character currentKey : table.keySet()){
@@ -39,8 +42,8 @@ public class AnalisiFrequenze {
         return frequencyTable;
         //return table.size()+" numero lettere "+this.getMsgLength();
     }
-    public int getMsgLength(){
+    
+    private int getMsgLength(){
         return this.msgLength;
     }
-    
 }

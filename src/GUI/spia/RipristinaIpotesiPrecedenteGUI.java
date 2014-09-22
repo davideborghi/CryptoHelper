@@ -16,16 +16,16 @@ import model.spia.Sessione;
  *
  * @author user
  */
-public class RipristinaIpotesiPrecedente extends javax.swing.JFrame {
+public class RipristinaIpotesiPrecedenteGUI extends javax.swing.JFrame {
 
   /**
    * Creates new form RipristinaIpotesiPrecedente
    */
-  public RipristinaIpotesiPrecedente() {
+  public RipristinaIpotesiPrecedenteGUI() {
     initComponents();
   }
   
-  public RipristinaIpotesiPrecedente(Sessione s) {
+  public RipristinaIpotesiPrecedenteGUI(Sessione s) {
     this();
     this.sessione = s;
     

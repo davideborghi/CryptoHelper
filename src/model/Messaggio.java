@@ -6,20 +6,21 @@
 
 package model;
 
-import model.user.Cifratore;
-import model.user.SistemaCifratura;
 import db.DbManager;
 import db.Query;
 import db.QueryResult;
+import java.io.Serializable;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import model.user.Cifratore;
+import model.user.SistemaCifratura;
 
 /**
  *
  * @author MASTER
  */
-public class Messaggio implements MessaggioMittente, MessaggioDestinatario{
+public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Serializable {
     private int id;
     private UserInfo mittente, destinatario;
     private SistemaCifratura sdc;
