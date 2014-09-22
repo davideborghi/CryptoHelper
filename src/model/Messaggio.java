@@ -9,7 +9,6 @@ package model;
 import db.DbManager;
 import db.Query;
 import db.QueryResult;
-import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +19,7 @@ import model.user.SistemaCifratura;
  *
  * @author MASTER
  */
-public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Serializable {
+public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
     private int id;
     private UserInfo mittente, destinatario;
     private SistemaCifratura sdc;
@@ -36,11 +35,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
         this.testoCifrato = rs.getString(5);
         this.sdc = SistemaCifratura.load( rs.getString("idsistemacifratura") ); 
         this.bozza = rs.getBoolean(8);
-        this.letto = rs.getBoolean(9);
-  
-        
-        
-         
+        this.letto = rs.getBoolean(9); 
     }
     
     public Messaggio(String testo, String lingua, UserInfo mittente, UserInfo destinatario){
@@ -82,20 +77,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
         this.sdc = s;
     }
     
-    /*public static Messaggio load(int id){
-        DbManager db = connect();
-        Messaggio m;
-        Vector v = db.eseguiQuery("SELECT * FROM `cryptohelper`.`messaggio` WHERE id = " + id);
-        if(v.size()<= 0) return new Messaggio();
-        else{
-            p = new Proposta[v.size()];
-            for(int i = 0; i < v.size(); i++){
-                p[i] = new Proposta(Integer.parseInt(((String[])v.elementAt(i))[0]), new UserInfo(Integer.parseInt(((String[])v.elementAt(i))[1])), new UserInfo(Integer.parseInt(((String[])v.elementAt(i))[2])), ((String[])v.elementAt(i))[3]);
-            }
-            //return v;
-        }
-    }//carica il messaggio*/
-    
     public static List<Messaggio> caricaIniviati(Studente s){
         return null;
     }
@@ -125,7 +106,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
         ArrayList<MessaggioDestinatario> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT * FROM `cryptohelper`.`messaggio` WHERE id_destinatario = " + Session.getIdLoggedUser());
+            Query q = db.createQuery("SELECT * FROM `messaggio` WHERE id_destinatario = " + Session.getIdLoggedUser());
             QueryResult rs = db.execute(q);
             while( rs.next() ){
                 UserInfo mittente = new UserInfo(rs.getString(2));
@@ -139,17 +120,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
             throw new RuntimeException( ex.getMessage(), ex );
         }
         return result.toArray( new MessaggioDestinatario[result.size()] );
-        /*DbManager db = connect();
-        MessaggioDestinatario[] m;
-        Vector v = db.eseguiQuery("SELECT * FROM `cryptohelper`.`messaggio` WHERE id_destinatario = " + Session.getIdLoggedUser());
-        if(v.size()<= 0) return new MessaggioDestinatario[0];
-        else{
-            m = new MessaggioDestinatario[v.size()];
-            for(int i = 0; i < v.size(); i++){
-                m[i] = new Messaggio(((String[])v.elementAt(i))[3], ((String[])v.elementAt(i))[5], new UserInfo(((String[])v.elementAt(i))[1]), new UserInfo(((String[])v.elementAt(i))[2]));
-            }
-            return m;
-        }*/
     }
     
     public boolean elimina(){
@@ -161,7 +131,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
     }
     
     public void cifra(){
-        //SistemaCifratura.load(this.mittente, this.destinatario);
         this.getSdc().calcolaMappatura(); //sdc ha ora un oggetto mappatura
         this.testoCifrato = Cifratore.cifra(this.getTesto(), this.getSdc().getMappatura()); 
     }
@@ -171,14 +140,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario, Seri
     }
     
     public boolean save(){
-        /*DbManager db = connect();
-        if (!db.eseguiAggiornamento("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.mittente.getId()+"', '"+this.destinatario.getId()+"', '" + this.testo + "', '" + this.testoCifrato + "' , '" + this.lingua + "', 'titoloDiProva', " + this.bozza + ", false);")) {
-            System.out.println("Errore nell'aggiornamento!");
-            System.out.println(db.getErrore());
-            return false;
-        }
-        System.out.println("sgsgf");
-        return true;*/
         try{
             DbManager db = DbManager.getInstance();
             Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.getMittente().getId()+"', '"+this.getDestinatario().getId()+"', '" + this.getTesto() + "', '" + this.getTestoCifrato() + "' , '" + this.getLingua() + "', 'titoloDiProva', " + this.isBozza() + ", false);");

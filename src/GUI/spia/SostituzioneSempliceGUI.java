@@ -17,7 +17,7 @@ import model.spia.SostituzioneSemplice;
  *
  * @author davide
  */
-public class SostituzioneLettera extends javax.swing.JFrame {
+public class SostituzioneSempliceGUI extends javax.swing.JFrame {
   
     public static char[] getCaratteriDaSostituire() {
       
@@ -26,7 +26,7 @@ public class SostituzioneLettera extends javax.swing.JFrame {
       new Thread(new Runnable() {
         @Override
         public void run() {
-          SostituzioneLettera frame = new SostituzioneLettera(buff);
+          SostituzioneSempliceGUI frame = new SostituzioneSempliceGUI(buff);
           frame.setVisible(true);
         }
       }).start();
@@ -70,11 +70,11 @@ public class SostituzioneLettera extends javax.swing.JFrame {
     /**
      * Creates new form SostituzioneLettera
      */
-    private SostituzioneLettera() {
+    private SostituzioneSempliceGUI() {
         initComponents();
     }
     
-    private SostituzioneLettera( SynchronizedBuffer<char[]> buff ) {
+    private SostituzioneSempliceGUI( SynchronizedBuffer<char[]> buff ) {
     this();
     this.buff = buff;
   }

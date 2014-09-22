@@ -6,13 +6,16 @@ import GUI.spia.CicloDiAnalisi;
 import db.DbManager;
 import db.Query;
 import db.QueryResult;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import model.Messaggio;
 import model.Studente;
 
@@ -45,14 +48,37 @@ public class Sessione extends Observable implements Serializable {
     String key = GenericSelector.selectOptions(optionList);
 
     //In base alla key scelta deserializza la Sessione dal database
-    Query u = db.createQuery("SELECT `sessione` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
+    Query u = db.createQuery("SELECT `id`, `sessione` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
     u.setString(1, owner.getId());
     u.setString(2, key);
     QueryResult qr = db.execute(u);
 
     if (qr.next()) {
-      result = qr.getObject("sessione", Sessione.class);
+      
+      try {
+      ByteArrayInputStream bais;
+      ObjectInputStream ins;
+      bais = new ByteArrayInputStream(qr.getBytes("sessione"));
+      ins = new ObjectInputStream(bais);
+      result =(Sessione)ins.readObject();
+      
+      } catch( IOException | ClassNotFoundException ex ) {
+        throw new RuntimeException( ex.getMessage(), ex );
+      }
+      
+      result.id = qr.getInt("id");
       result.owner = owner;
+      
+      Query w = db.createQuery("SELECT * FROM `messaggio` WHERE `id` = ?");
+      w.setInt(1, result.messaggioID);
+      QueryResult qu = db.execute( w );
+      
+      if( qu.next() ) {
+        result.messaggio = new Messaggio( qu );
+      } else {
+        throw new RuntimeException("il messaggion con id "+result.messaggioID+"non è stato trovato nel database");
+      }
+      
     }
     return result;
   }
@@ -77,9 +103,9 @@ public class Sessione extends Observable implements Serializable {
     try {
       DbManager db = DbManager.getInstance();
       Query q = db.createQuery("DELETE FROM `Sessione` WHERE `id` = ? AND `userId` = ?");
-      q.setString(1, Studente.getLoggato().getId());
-      q.setInt(2, sessione.id);
-      QueryResult rs = db.execute(q);
+      q.setInt(1, sessione.id);
+      q.setString(2, sessione.owner.getId());
+      db.executeUpdate(q);
 
     } catch (SQLException ex) {
       throw new RuntimeException(ex.getMessage(), ex);
@@ -87,17 +113,33 @@ public class Sessione extends Observable implements Serializable {
   }
 
   public static void saveSessione(Sessione sessione) {
+    
+    //i set a null sono essenziali per la serializzazione della classe
     Spia owner = sessione.owner;
     sessione.owner = null;
+    sessione.messaggioID = sessione.messaggio.getId();
+    sessione.messaggio = null;
+       
     try {
+      
+      ByteArrayOutputStream bos = new ByteArrayOutputStream();
+      ObjectOutputStream oos = new ObjectOutputStream(bos);
+      oos.writeObject(sessione);
+      oos.flush();
+      oos.close();
+      bos.close();
+      byte[] data = bos.toByteArray();
+    
       DbManager db = DbManager.getInstance();
-      Query q = db.createQuery("INSERT INTO `Sessione`(`userId`,`key`,`session`) VALUES( ?, ?, ? )");
+      Query q = db.createQuery("INSERT INTO `Sessione`(`userId`,`key`,`sessione`) VALUES( ?, ?, ? ) ON DUPLICATE KEY UPDATE `sessione` = ?");
       q.setString(1, owner.getId());
       q.setString(2, sessione.key);
-      q.setObject(3, sessione);
-      QueryResult rs = db.execute(q);
+      q.setObject(3, data);
+      q.setObject(4, data);
+      
+      db.executeUpdate(q);
 
-    } catch (SQLException ex) {
+    } catch (IOException | SQLException ex) {
       throw new RuntimeException(ex.getMessage(), ex);
     }
   }
@@ -114,6 +156,8 @@ public class Sessione extends Observable implements Serializable {
 
   public Sessione(Spia owner, Messaggio m) {
     this.messaggio = m;
+    this.messaggioID = m.getId();
+    
     this.owner = owner;
     
     this.key = new java.sql.Timestamp(new java.util.Date().getTime()).toString();
@@ -158,7 +202,13 @@ public class Sessione extends Observable implements Serializable {
     try { wait(); }
     catch (InterruptedException ex) { throw new RuntimeException(ex.getMessage(), ex); }
     
-    saveSessione( this );
-    new PopUpViewer("la sessione è stata salvata").setVisible(true);
+    try {
+      saveSessione( this );
+      new PopUpViewer("la sessione è stata salvata").setVisible(true);
+    } catch( RuntimeException ex ) {
+      new PopUpViewer("La sessione non è stata salvata: \n\n"+ex.getMessage()).setVisible(true);
+      throw ex;
+    }
+    
   }
 }

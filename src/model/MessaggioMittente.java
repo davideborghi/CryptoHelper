@@ -10,7 +10,7 @@ package model;
  *
  * @author MASTER
  */
-public interface MessaggioMittente {
+public interface MessaggioMittente extends MessaggioAstratto {
     public boolean isBozza();
     public boolean save();
     public void cifra();

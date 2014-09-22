@@ -70,8 +70,8 @@ public class DbManager {
     return new QueryResultImpl( q );
   }
   
-  /*public QueryResult executeUpdate( Query q ) throws SQLException {
-    return new QueryResultImpl( q );
-  }*/
+  public void executeUpdate( Query q ) throws SQLException {
+    q.executeUpdate();
+  }
   
 }

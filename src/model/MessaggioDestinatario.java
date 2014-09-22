@@ -10,6 +10,6 @@ package model;
  *
  * @author MASTER
  */
-public interface MessaggioDestinatario {
+public interface MessaggioDestinatario extends MessaggioAstratto {
     public boolean isLetto();
 }

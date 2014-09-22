@@ -6,7 +6,7 @@
 
 package model.spia;
 
-import GUI.spia.SostituzioneLettera;
+import GUI.spia.SostituzioneSempliceGUI;
 
 
 /**
@@ -26,7 +26,7 @@ public class SostituzioneSemplice implements StrumentoDiManipolazione {
     new Thread( new Runnable() {
       @Override
       public void run() {
-        char[] array = SostituzioneLettera.getCaratteriDaSostituire();
+        char[] array = SostituzioneSempliceGUI.getCaratteriDaSostituire();
 
         if( array != null && array.length == 2 ) {
           char crypt = array[0];
