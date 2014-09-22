@@ -10,7 +10,6 @@ import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import model.Session;
 import model.Studente;
 import model.UserInfo;
 import model.user.Proposta;
@@ -96,7 +95,7 @@ public class Controller {
         ArrayList<UserInfo> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT * FROM user where username <> '" + Session.getLoggedUser() + "'");
+            Query q = db.createQuery("SELECT * FROM user where username <> '" + Studente.getLoggato().getId() + "'");
             QueryResult rs = db.execute( q );
             while( rs.next() ) {
                 String id = rs.getString(1);

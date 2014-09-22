@@ -13,7 +13,6 @@ import db.Query;
 import db.QueryResult;
 import java.sql.SQLException;
 import java.util.Vector;
-import model.Session;
 import model.Studente;
 import model.UserInfo;
 
@@ -88,10 +87,10 @@ public class SistemaCifratura {
     public SistemaCifratura(String chiave, String metodo){
         this.chiave = chiave;
         this.metodo = metodo;
-        this.creatore = new UserInfo(Session.getIdLoggedUser()); 
+        this.creatore = new UserInfo(Studente.getLoggato().getId()); 
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("INSERT INTO `cryptohelper`.`sistemacifratura` (`id`, `chiave`, `metodo`, `idcreatore`) VALUES (NULL, '" +chiave+"', '"+metodo+"', '" + Session.getIdLoggedUser() + "')");
+            Query q = db.createQuery("INSERT INTO `cryptohelper`.`sistemacifratura` (`id`, `chiave`, `metodo`, `idcreatore`) VALUES (NULL, '" +chiave+"', '"+metodo+"', '" + Studente.getLoggato().getId() + "')");
             q.executeUpdate();
             q = db.createQuery("SELECT * FROM `cryptohelper`.`sistemacifratura` ORDER BY id DESC");
             QueryResult rs = db.execute(q);

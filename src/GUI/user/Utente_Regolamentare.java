@@ -13,7 +13,7 @@ import controller.CommunicationController;
 import java.awt.List;
 import model.Messaggio;
 import model.MessaggioDestinatario;
-import model.Session;
+import model.Studente;
 
 /**
  *
@@ -30,7 +30,7 @@ public class Utente_Regolamentare extends javax.swing.JFrame {
             Thread.sleep(1000);
         }
         catch(Exception e){}*/
-        Proposta[] p = CommunicationController.getProposte(Session.getIdLoggedUser());
+        Proposta[] p = CommunicationController.getProposte(Studente.getLoggato().getId());
         if(p.length > 0){
             NuoveProposte n = new NuoveProposte(p);
             n.setVisible(true);

@@ -106,7 +106,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         ArrayList<MessaggioDestinatario> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT * FROM `messaggio` WHERE id_destinatario = " + Session.getIdLoggedUser());
+            Query q = db.createQuery("SELECT * FROM `messaggio` WHERE id_destinatario = " + Studente.getLoggato().getId());
             QueryResult rs = db.execute(q);
             while( rs.next() ){
                 UserInfo mittente = new UserInfo(rs.getString(2));

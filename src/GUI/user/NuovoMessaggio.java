@@ -16,7 +16,7 @@ import controller.Controller;
  * @author MASTER
  */
 public class NuovoMessaggio extends javax.swing.JFrame {
-    private PropostaConfermata[] a = CommunicationController.getProposteAccettate(Session.getIdLoggedUser());
+    private PropostaConfermata[] a = CommunicationController.getProposteAccettate(Studente.getLoggato().getId());
     private int index;
     private Messaggio m = null;
     /**
@@ -24,7 +24,7 @@ public class NuovoMessaggio extends javax.swing.JFrame {
      */
     public NuovoMessaggio() {
         initComponents();
-        m.setMittente(new UserInfo(Session.getIdLoggedUser()));
+        m.setMittente(new UserInfo(Studente.getLoggato().getId()));
         //a = CommunicationController.getProposteAccettate(Session.getIdLoggedUser());
         int[] id_list = new int[a.length];
         for(int i=0; i<id_list.length; i++){

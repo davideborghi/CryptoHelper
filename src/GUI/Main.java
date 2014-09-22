@@ -9,7 +9,6 @@ import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
-import model.Session;
 import model.Studente;
 import model.spia.Spia;
 

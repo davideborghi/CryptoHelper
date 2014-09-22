@@ -6,7 +6,6 @@
 
 package GUI.user;
 
-import model.Session;
 //import ClmodelserInfo;
 //import Clasmodeldente;
 import controller.CommunicationController;
@@ -176,7 +175,7 @@ public class PropostaSistemaDiCifratura extends javax.swing.JFrame {
         //System.out.println(UserInfo.getLoggedUser());
         //System.out.println("E così tu, " + UserInfo.getLoggedUser() + ", vorresti mandare a " + (jList2.getSelectedValue()).toString() + "un messaggio usando " +(String)jComboBox1.getSelectedItem() + ", giusto?? bravoooo!!");
         SistemaCifratura s = new SistemaCifratura(jTextField1.getText(), (String)jComboBox1.getSelectedItem());
-        boolean b = CommunicationController.inviaProposta(Session.getIdLoggedUser(), ((Studente)jList2.getSelectedValue()).getId(), s);
+        boolean b = CommunicationController.inviaProposta(Studente.getLoggato().getId(), ((Studente)jList2.getSelectedValue()).getId(), s);
         System.out.println(b);
     }//GEN-LAST:event_jButton2ActionPerformed
 

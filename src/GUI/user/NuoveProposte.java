@@ -10,7 +10,7 @@ import model.user.Proposta;
 /*import Clmodelession;
 import ClasmodelrInfo;*/
 import controller.CommunicationController;
-import model.Session;
+import model.Studente;
 
 /**
  *
@@ -106,7 +106,7 @@ public class NuoveProposte extends javax.swing.JFrame {
         Proposta p = (Proposta)jList1.getSelectedValue();
         if(p != null){
             CommunicationController.inviaDecisione(p, "accettata");
-            Proposta[] nuovo = CommunicationController.getProposte(Session.getIdLoggedUser());
+            Proposta[] nuovo = CommunicationController.getProposte(Studente.getLoggato().getId());
             jList1.setListData(nuovo);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -116,7 +116,7 @@ public class NuoveProposte extends javax.swing.JFrame {
         Proposta p = (Proposta)jList1.getSelectedValue();
         if(p != null){
             CommunicationController.inviaDecisione(p, "rifiutata");
-            Proposta[] nuovo = CommunicationController.getProposte(Session.getIdLoggedUser());
+            Proposta[] nuovo = CommunicationController.getProposte(Studente.getLoggato().getId());
             jList1.setListData(nuovo);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
