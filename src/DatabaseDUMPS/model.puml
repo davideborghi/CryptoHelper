@@ -1,0 +1,83 @@
+@startuml
+
+class GUI.GenericSelector
+class GUI.PopUpViewer
+class GUI.CicloDiAnalisi
+class GUI.SostituzioneSempliceGUI
+class controller.Controller
+class db.DbManager
+class db.Query
+class db.QueryResult
+
+
+class model.Messaggio
+class model.Studente
+class model.UserInfo
+
+class model.Spia
+class model.Studente
+
+class model.Sessione
+class model.Ipotesi
+
+interface model.StrumentoDiManipolazione
+class model.RipristinaIpotesiPrecedente
+class model.SostituzioneSemplice
+
+interface model.StrumentoDiSupporto
+class model.AnalisiFrequenze
+
+
+class model.CalcolatoreCesare
+class model.CalcolatoreParolaChiave
+class model.CalcolatorePseudocasuale
+class model.Cifratore
+class model.Mappatura
+class model.Proposta
+class model.PropostaConfermata
+class model.SistemaCifratura
+
+
+interface model.MessaggioAstratto
+interface model.MessaggioDestinatario
+interface model.MessaggioMittente
+
+interface model.CalcolatoreMappatura
+
+model.Messaggio ..> model.Cifratore
+model.Messaggio ..> model.SistemaCifratura
+
+model.Messaggio --|> model.MessaggioDestinatario
+model.Messaggio --|> model.MessaggioMittente
+
+
+model.AnalisiFrequenze --|> model.StrumentoDiSupporto
+
+model.RipristinaIpotesiPrecedente --|> model.StrumentoDiManipolazione
+model.SostituzioneSemplice ..> GUI.SostituzioneSempliceGUI
+model.SostituzioneSemplice --|> model.StrumentoDiManipolazione
+
+
+model.Sessione ..> GUI.GenericSelector
+model.Sessione ..> GUI.PopUpViewer
+model.Sessione ..> GUI.CicloDiAnalisi
+
+model.Sessione ..> model.Messaggio
+model.Sessione ..> model.Studente
+
+model.Spia --|> model.Studente
+model.CalcolatoreCesare --|> model.CalcolatoreMappatura
+model.CalcolatoreParolaChiave --|> model.CalcolatoreMappatura
+model.CalcolatorePseudocasuale --|> model.CalcolatoreMappatura
+model.Proposta ..> controller.Controller
+model.Proposta ..> model.UserInfo
+model.PropostaConfermata ..> model.UserInfo
+model.PropostaConfermata --|> model.Proposta
+
+model.SistemaCifratura ..> model.Studente
+model.SistemaCifratura ..> model.UserInfo
+model.MessaggioDestinatario --|> model.MessaggioAstratto
+model.MessaggioMittente --|> model.MessaggioAstratto
+model.StrumentoDiManipolazione ..> model.Messaggio
+model.StrumentoDiSupporto ..> model.Messaggio
+@enduml
