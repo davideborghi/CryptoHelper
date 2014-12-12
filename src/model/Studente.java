@@ -43,13 +43,6 @@ public class Studente {
     }
     
     public boolean login(){
-        /*DbManager db = connect();
-        System.out.println(login + " " + pwd);
-        Vector v = db.eseguiQuery("SELECT * FROM user WHERE username = '"+this.login+"' and password = '"+this.pwd+"';");
-        if(v.size() <= 0) return false;
-        String s = ((String[])v.elementAt(0))[0];
-        this.id = s;
-        return true;*/
         try{
             DbManager db = DbManager.getInstance();
             Query q = db.createQuery("SELECT * FROM user WHERE username = ? and password = ?");
@@ -59,6 +52,7 @@ public class Studente {
             QueryResult rs = db.execute(q);
             if( rs.next() ) {
               this.id = rs.getString("id");
+              this.loggato = new Studente("", "", this.id, this.getLogin(), this.getPwd());
             return true;
             } else {
               return false;
