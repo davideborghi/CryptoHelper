@@ -23,14 +23,14 @@ public class Proposta {
     protected int id;
     protected UserInfo proponente, partner;
     protected String stato;
-    protected SistemaCifratura s;
+    protected SistemaCifratura sdc;
     protected boolean notificata;
     
     public Proposta(int id, UserInfo proponente, UserInfo partner, SistemaCifratura sdc){
         this.id = id;
         this.proponente = proponente;
         this.partner = partner;
-        this.s = sdc;
+        this.sdc = sdc;
         this.stato = "in attesa";
     }
     
@@ -39,7 +39,7 @@ public class Proposta {
     }
     
     public SistemaCifratura getSdc(){
-        return this.s;
+        return this.sdc;
     }
     
     public UserInfo getPartner(){
@@ -57,7 +57,7 @@ public class Proposta {
         return true;*/
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("INSERT INTO `cryptohelper`.`proposta` (`id`, `id_mittente`, `id_destinatario`, `idsistemacifratura`, `stato`, `notificata`) VALUES (NULL, '" +this.proponente.getId()+"', '"+this.partner.getId()+"', '" + Integer.parseInt(this.s.getId()) + "', 'in attesa', NULL);");
+            Query q = db.createQuery("INSERT INTO `cryptohelper`.`proposta` (`id`, `id_mittente`, `id_destinatario`, `idsistemacifratura`, `stato`, `notificata`) VALUES (NULL, '" +this.proponente.getId()+"', '"+this.partner.getId()+"', '" + Integer.parseInt(this.sdc.getId()) + "', 'in attesa', NULL);");
             q.executeUpdate();
         }
         catch (SQLException ex){
@@ -91,7 +91,7 @@ public class Proposta {
     }*/
     
     public String toString(){
-        return "Utente con id " + proponente.getId() + " vuole scambiare un messaggio utilizzando " + s.getSdc();
+        return "Utente con id " + proponente.getId() + " vuole scambiare un messaggio utilizzando " + sdc.getSdc();
     }
     
 }

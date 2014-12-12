@@ -6,7 +6,10 @@
 
 package GUI.spia;
 
+import GUI.GenericSelector;
+import java.util.List;
 import javax.swing.JFrame;
+import model.Messaggio;
 import model.spia.Sessione;
 import model.spia.Spia;
 
@@ -93,7 +96,12 @@ public class GestisciSessioneDiLavoro extends javax.swing.JFrame {
       new Thread( new Runnable() {
         public void run() {
           self.setVisible(false);
-          s.startNewSessione();
+          List<Messaggio> options = Messaggio.getMessaggi();
+          for (Messaggio m : options) {
+            m.setToStringF("%lingua%, %testoCif%");
+          }
+          Messaggio selectedMsg = GenericSelector.selectOptions(options);
+          s.startNewSessione( selectedMsg );
           self.setVisible(true);
         }
       }).start();

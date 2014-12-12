@@ -52,4 +52,8 @@ public class UserInfo {
     public String getId(){
         return this.id;
     }
+    
+    public String toString() {
+      return this.username;
+    }
 }

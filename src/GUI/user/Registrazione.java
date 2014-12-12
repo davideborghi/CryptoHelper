@@ -6,7 +6,6 @@
 
 package GUI.user;
 
-import controller.Controller;
 import model.Studente;
 
 /**

@@ -6,7 +6,9 @@ package model.spia;
  * and open the template in the editor.
  */
 
+import GUI.GenericSelector;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.*;
@@ -27,8 +29,9 @@ public class Spia extends Studente {
       super( nome, cognome, id, user, password );
     }
     
-    public Sessione startNewSessione() {
-      Sessione s = Sessione.startNewSessione( this );
+    public Sessione startNewSessione( Messaggio selectedMsg ) {
+      Sessione s = new Sessione(this, selectedMsg);
+      s.start();
       return s;
     }
     

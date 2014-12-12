@@ -10,7 +10,6 @@ import model.user.Proposta;
 /*import Clmodelession;
 import ClasmodelrInfo;*/
 import controller.CommunicationController;
-import java.awt.List;
 import model.Messaggio;
 import model.MessaggioDestinatario;
 import model.Studente;
@@ -24,19 +23,19 @@ public class Utente_Regolamentare extends javax.swing.JFrame {
     /**
      * Creates new form Mittente
      */
-    public Utente_Regolamentare() {
+    public Utente_Regolamentare( Studente s ) {
         initComponents();
-        /*try{
-            Thread.sleep(1000);
-        }
-        catch(Exception e){}*/
-        Proposta[] p = CommunicationController.getProposte(Studente.getLoggato().getId());
-        if(p.length > 0){
-            NuoveProposte n = new NuoveProposte(p);
+        this.studente = s;
+        
+        /* E' parte di interfaccia: popup per le nuove proposte */
+        Proposta[] p = CommunicationController.getProposte(s.getId());
+        if(p.length > 0) {
+            NuoveProposte n = new NuoveProposte( this.studente, p );
             n.setVisible(true);
         }
-
-        MessaggioDestinatario[] l = Messaggio.caricaRicevuti();
+        
+        /* Controllo di interfaccia: se ci sono messaggi si possono leggere */
+        MessaggioDestinatario[] l = Messaggio.caricaRicevuti( this.studente );
         if(l.length > 0)
             jButton3.setText("Leggi Messaggi (" + l.length + ")");
     }
@@ -106,7 +105,7 @@ public class Utente_Regolamentare extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        new NuovoMessaggio().setVisible(true);
+        new NuovoMessaggio( this.studente ).setVisible(true);
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
@@ -115,44 +114,12 @@ public class Utente_Regolamentare extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        new LeggiMessaggi().setVisible(true);
+        new LeggiMessaggi( this.studente ).setVisible(true);
     }//GEN-LAST:event_jButton3ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Utente_Regolamentare.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Utente_Regolamentare.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Utente_Regolamentare.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Utente_Regolamentare.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new Utente_Regolamentare().setVisible(true);
-            }
-        });
-    }
-
+    private Studente studente;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

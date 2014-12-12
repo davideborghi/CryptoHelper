@@ -29,7 +29,7 @@ import model.Studente;
  * @author user
  */
 public class Sessione extends Observable implements Serializable {
-
+  
   public static class Properties extends java.util.Hashtable<String, Object> {
   }
 
@@ -81,17 +81,6 @@ public class Sessione extends Observable implements Serializable {
       
     }
     return result;
-  }
-
-  public static Sessione startNewSessione( Spia owner ) {
-    List<Messaggio> options = Messaggio.getMessaggi();
-    for (Messaggio m : options) {
-      m.setToStringF("%lingua%, %testoCif%");
-    }
-    Messaggio selectedMsg = GenericSelector.selectOptions(options);
-    Sessione s = new Sessione(owner, selectedMsg);
-    s.start();
-    return s;
   }
 
   public static Sessione restoreSessione(Sessione s) {

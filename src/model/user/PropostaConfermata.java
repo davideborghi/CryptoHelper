@@ -18,12 +18,12 @@ public class PropostaConfermata extends Proposta{
         this.id = id;
         this.proponente = proponente;
         this.partner = partner;
-        this.s = sdc;
+        this.sdc = sdc;
         this.stato = "in attesa";
     }
     
     
     public String toString(){
-        return "Invia messaggio a " + this.partner.getId() + " utilizzando " + this.s.getSdc();
+        return "Invia messaggio a " + this.partner.getId() + " utilizzando " + this.sdc.getSdc();
     }
 }

@@ -9,26 +9,34 @@ package GUI.user;
 import model.user.PropostaConfermata;
 import controller.CommunicationController;
 import model.*;
-import controller.Controller;
+import model.user.SistemaCifratura;
 
 /**
  *
  * @author MASTER
  */
 public class NuovoMessaggio extends javax.swing.JFrame {
-    private PropostaConfermata[] a = CommunicationController.getProposteAccettate(Studente.getLoggato().getId());
-    private int index;
-    private Messaggio m = null;
+    
+    /**
+     * Elenco di tutte le proposte inviate
+     */
+    private PropostaConfermata[] proposte;
+    
+    /* L'oggetto studente, ovvero l'utente loggato */
+    private Studente studente;
+    
     /**
      * Creates new form NuovoMessaggio
      */
-    public NuovoMessaggio() {
+    public NuovoMessaggio( Studente s ) {
         initComponents();
-        m.setMittente(new UserInfo(Studente.getLoggato().getId()));
-        //a = CommunicationController.getProposteAccettate(Session.getIdLoggedUser());
-        int[] id_list = new int[a.length];
+        
+        this.studente = s;
+        
+        this.proposte  = CommunicationController.getProposteAccettate(this.studente.getId());
+        int[] id_list = new int[proposte.length];
         for(int i=0; i<id_list.length; i++){
-            jComboBox1.addItem(a[i]);
+            jComboBox1.addItem(proposte[i]);
         }
         
     }
@@ -145,66 +153,34 @@ public class NuovoMessaggio extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        new PropostaSistemaDiCifratura().setVisible(true);
+        new PropostaSistemaDiCifratura( this.studente ).setVisible(true);
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-        m.setTesto(jTextField1.getText());
-        m.cifra(); //cifra il messaggio
-        CommunicationController.send(m); //invio del messaggio
+
+        int languageIndex = jComboBox1.getSelectedIndex();
+        
+        String testo = jTextField1.getText();
+        String lingua = (String)jComboBox3.getSelectedItem();
+        UserInfo mittente     = new UserInfo( this.studente.getId());
+        UserInfo destinatario = new UserInfo(proposte[languageIndex-1].getPartner().getId());
+        SistemaCifratura sdc = proposte[languageIndex-1].getSdc();
+        
+        /* Instanzia il messaggio e cifralo */
+        Messaggio m = new Messaggio( testo, lingua, mittente, destinatario, sdc );
+        m.cifra();
+        /* invio del messaggio */
+        CommunicationController.send(m); 
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jComboBox1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox1ActionPerformed
         // TODO add your handling code here:
-        index = jComboBox1.getSelectedIndex();
-        m.setDestinatario(new UserInfo(a[index-1].getPartner().getId()));
-        m.setSdc(a[index-1].getSdc());
-        System.out.println(m.getSdc());
-        
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jComboBox3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBox3ActionPerformed
         // TODO add your handling code here:
-        //System.out.println((String)jComboBox1.getSelectedItem());
-        m.setLingua((String)jComboBox3.getSelectedItem());
     }//GEN-LAST:event_jComboBox3ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuovoMessaggio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuovoMessaggio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuovoMessaggio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuovoMessaggio.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NuovoMessaggio().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;

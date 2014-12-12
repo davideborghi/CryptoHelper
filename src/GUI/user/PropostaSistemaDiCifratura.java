@@ -26,11 +26,14 @@ public class PropostaSistemaDiCifratura extends javax.swing.JFrame {
     private Proposta p;
     /**
      * Creates new form NuovoMessaggio
+     * @param s
      */
-    public PropostaSistemaDiCifratura() {
+    public PropostaSistemaDiCifratura( Studente s ) {
         initComponents();
-        UserInfo[] s = Controller.recuperaUtenti();
-        jList2.setListData(s);
+        UserInfo[] ui = Controller.recuperaUtenti( s );
+        jList2.setListData(ui);
+        
+        this.studente = s;
     }
 
     /**
@@ -171,11 +174,14 @@ public class PropostaSistemaDiCifratura extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        //System.out.println(UserInfo.getLoggedUser());
-        //System.out.println("E così tu, " + UserInfo.getLoggedUser() + ", vorresti mandare a " + (jList2.getSelectedValue()).toString() + "un messaggio usando " +(String)jComboBox1.getSelectedItem() + ", giusto?? bravoooo!!");
-        SistemaCifratura s = new SistemaCifratura(jTextField1.getText(), (String)jComboBox1.getSelectedItem());
-        boolean b = CommunicationController.inviaProposta(Studente.getLoggato().getId(), ((Studente)jList2.getSelectedValue()).getId(), s);
+        
+        SistemaCifratura sdc = new SistemaCifratura(jTextField1.getText(), (String)jComboBox1.getSelectedItem());
+        UserInfo creatore = new UserInfo( this.studente.getId(), this.studente.getLogin() );
+        sdc.setCreatore( creatore );
+        
+        sdc.save();
+        
+        boolean b = CommunicationController.inviaProposta(this.studente.getId(), ((UserInfo)jList2.getSelectedValue()).getId(), sdc);
         System.out.println(b);
     }//GEN-LAST:event_jButton2ActionPerformed
 
@@ -183,40 +189,8 @@ public class PropostaSistemaDiCifratura extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(PropostaSistemaDiCifratura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(PropostaSistemaDiCifratura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(PropostaSistemaDiCifratura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(PropostaSistemaDiCifratura.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new PropostaSistemaDiCifratura().setVisible(true);
-            }
-        });
-    }
+    
+    private Studente studente;
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;

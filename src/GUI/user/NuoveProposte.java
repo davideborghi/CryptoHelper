@@ -21,9 +21,11 @@ public class NuoveProposte extends javax.swing.JFrame {
     /**
      * Creates new form PropostePendenti
      */
-    public NuoveProposte(Proposta[] p) {
+    public NuoveProposte(Studente s, Proposta[] p) {
         initComponents();
         jList1.setListData(p);
+        
+        this.studente = s;
     }
 
     /**
@@ -106,7 +108,7 @@ public class NuoveProposte extends javax.swing.JFrame {
         Proposta p = (Proposta)jList1.getSelectedValue();
         if(p != null){
             CommunicationController.inviaDecisione(p, "accettata");
-            Proposta[] nuovo = CommunicationController.getProposte(Studente.getLoggato().getId());
+            Proposta[] nuovo = CommunicationController.getProposte(this.studente.getId());
             jList1.setListData(nuovo);
         }
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -116,7 +118,7 @@ public class NuoveProposte extends javax.swing.JFrame {
         Proposta p = (Proposta)jList1.getSelectedValue();
         if(p != null){
             CommunicationController.inviaDecisione(p, "rifiutata");
-            Proposta[] nuovo = CommunicationController.getProposte(Studente.getLoggato().getId());
+            Proposta[] nuovo = CommunicationController.getProposte(this.studente.getId());
             jList1.setListData(nuovo);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -156,6 +158,8 @@ public class NuoveProposte extends javax.swing.JFrame {
         });
     }
 
+    private Studente studente;
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;

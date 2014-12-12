@@ -17,15 +17,6 @@ import java.sql.SQLException;
  * @author MASTER
  */
 public class Studente {
-  
-    private static Studente loggato = null;
-    
-    public static void setLoggato( Studente s ) {
-      loggato = s;
-    }
-    public static Studente getLoggato() {
-      return loggato;
-    }
     
     private String nome;
     private String cognome;
@@ -141,4 +132,5 @@ public class Studente {
   public DbManager getDbManager0() {
     return DbManager0;
   }
+  
 }

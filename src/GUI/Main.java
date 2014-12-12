@@ -211,7 +211,7 @@ public class Main extends javax.swing.JFrame {
           } else {
             new Thread( new Runnable() {
               public void run() {
-                new Utente_Regolamentare().setVisible(true);
+                new Utente_Regolamentare(s).setVisible(true);
               }
             }).start();
           }

@@ -102,11 +102,11 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         return result;
     }
     
-    public static MessaggioDestinatario[] caricaRicevuti(){
+    public static MessaggioDestinatario[] caricaRicevuti( Studente s ){
         ArrayList<MessaggioDestinatario> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT * FROM `messaggio` WHERE id_destinatario = " + Studente.getLoggato().getId());
+            Query q = db.createQuery("SELECT * FROM `messaggio` WHERE id_destinatario = " + s.getId());
             QueryResult rs = db.execute(q);
             while( rs.next() ){
                 UserInfo mittente = new UserInfo(rs.getString(2));
@@ -142,7 +142,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
     public boolean save(){
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`) VALUES (NULL, '" +this.getMittente().getId()+"', '"+this.getDestinatario().getId()+"', '" + this.getTesto() + "', '" + this.getTestoCifrato() + "' , '" + this.getLingua() + "', 'titoloDiProva', " + this.isBozza() + ", false);");
+            Query q = db.createQuery("INSERT INTO `cryptohelper`.`messaggio` (`id`, `id_mittente`, `id_destinatario`, `testo`, `testoCifrato`, `lingua`, `titolo`, `bozza`, `letto`, `idsistemacifratura`) VALUES (NULL, '" +this.getMittente().getId()+"', '"+this.getDestinatario().getId()+"', '" + this.getTesto() + "', '" + this.getTestoCifrato() + "' , '" + this.getLingua() + "', 'titoloDiProva', " + this.isBozza() + ", false, "+this.getSdc().getId()+");");
             q.executeUpdate();
         }
         catch (SQLException ex){

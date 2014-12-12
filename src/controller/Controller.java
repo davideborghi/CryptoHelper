@@ -91,11 +91,11 @@ public class Controller {
     
     
     
-    public static UserInfo[] recuperaUtenti(){
+    public static UserInfo[] recuperaUtenti( Studente s ){
         ArrayList<UserInfo> result = new ArrayList<>();
         try{
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("SELECT * FROM user where username <> '" + Studente.getLoggato().getId() + "'");
+            Query q = db.createQuery("SELECT * FROM user where username <> '" + s.getId() + "'");
             QueryResult rs = db.execute( q );
             while( rs.next() ) {
                 String id = rs.getString(1);
