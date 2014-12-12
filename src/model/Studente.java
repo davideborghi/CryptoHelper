@@ -52,8 +52,7 @@ public class Studente {
             QueryResult rs = db.execute(q);
             if( rs.next() ) {
               this.id = rs.getString("id");
-              this.loggato = new Studente("", "", this.id, this.getLogin(), this.getPwd());
-            return true;
+              return true;
             } else {
               return false;
             }
