@@ -181,7 +181,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         return true;
     }
 
-    private String toStringF = "Messaggio in lingua: %lingua% inviato da utente con id %mittenteID% ad utente con id %destinatarioID% e testo: %testo%";
+    private String toStringF = "Messaggio in lingua: %lingua% inviato da %mittente%: %testo%";
 
     public String setToStringF(String f) {
         String result = getToStringF();
@@ -192,8 +192,8 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
     public String toString() {
         String result = getToStringF();
         result = result.replaceAll("%lingua%", getLingua());
-        result = result.replaceAll("%mittenteID%", getMittente().getId());
-        result = result.replaceAll("%destinatarioID%", getDestinatario().getId());
+        result = result.replaceAll("%mittente%", getMittente().toString());
+        result = result.replaceAll("%destinatarioID%", getDestinatario().toString());
         result = result.replaceAll("%testo%", getTesto());
         result = result.replaceAll("%testoCif%", getTestoCifrato());
         return result;
@@ -225,7 +225,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
      * @return the mittente
      */
     public UserInfo getMittente() {
-        return mittente;
+        return this.mittente;
     }
 
     /**

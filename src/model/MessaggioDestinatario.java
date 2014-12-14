@@ -12,4 +12,6 @@ package model;
  */
 public interface MessaggioDestinatario extends MessaggioAstratto {
     public boolean isLetto();
+
+    public UserInfo getMittente();
 }
