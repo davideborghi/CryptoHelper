@@ -121,7 +121,7 @@ public class MessaggioTest {
     /**
      * Test of caricaIniviati method, of class Messaggio.
      */
-    /*@Test
+    @Test
     public void testCaricaIniviati() {
         System.out.println("caricaIniviati");
         Studente s = null;
@@ -129,13 +129,12 @@ public class MessaggioTest {
         List<Messaggio> result = Messaggio.caricaIniviati(s);
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of caricaBozze method, of class Messaggio.
      */
-    /*@Test
+    @Test
     public void testCaricaBozze() {
         System.out.println("caricaBozze");
         Studente s = null;
@@ -143,8 +142,7 @@ public class MessaggioTest {
         Messaggio[] result = Messaggio.caricaBozze(s);
         assertArrayEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of getMessaggi method, of class Messaggio.
