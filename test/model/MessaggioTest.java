@@ -137,7 +137,7 @@ public class MessaggioTest {
     @Test
     public void testCaricaBozze() {
         System.out.println("caricaBozze");
-        Studente s = null;
+        Studente s = new Studente("bob");
         Messaggio[] expResult = null;
         Messaggio[] result = Messaggio.caricaBozze(s);
         assertArrayEquals(expResult, result);
@@ -147,7 +147,7 @@ public class MessaggioTest {
     /**
      * Test of getMessaggi method, of class Messaggio.
      */
-    /*@Test
+    @Test
     public void testGetMessaggi() {
         System.out.println("getMessaggi");
         List<Messaggio> expResult = null;
@@ -155,7 +155,7 @@ public class MessaggioTest {
         assertEquals(expResult, result);
         // TODO review the generated test code and remove the default call to fail.
         fail("The test case is a prototype.");
-    }*/
+    }
 
     /**
      * Test of caricaRicevuti method, of class Messaggio.
