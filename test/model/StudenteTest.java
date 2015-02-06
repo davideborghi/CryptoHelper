@@ -50,8 +50,10 @@ public class StudenteTest {
 
         try {
             DbManager db = DbManager.getInstance();
-            Query q = db.createQuery("DELETE FROM `cryptohelper`.`user` WHERE `user`.`id` = 49");
-            QueryResult rs = db.execute(q);
+            Query q = db.createQuery("DELETE FROM `cryptohelper`.`user` WHERE `user`.`username` = 'studenteTest'");
+            q.executeUpdate();
+            q = db.createQuery("DELETE FROM `cryptohelper`.`user` WHERE `user`.`username` = 'studenteTest2'");
+            q.executeUpdate();
         } catch (SQLException s) {
         }
 
@@ -63,7 +65,7 @@ public class StudenteTest {
     @Test
     public void testLogin() {
         System.out.println("login");
-        Studente s = new Studente("test", "junit", null, "studenTetest", "prova");
+        Studente s = new Studente("mario", "rossi", null, "studenteTest", "prova");
         boolean result = s.login();
         assertTrue(result);
     }
@@ -74,8 +76,8 @@ public class StudenteTest {
     @Test
     public void testRegistra() {
         System.out.println("registra");
-        String nome = "prova";
-        String password = "riprova";
+        String nome = "studenteTest2";
+        String password = "studenteTest2";
         boolean result = Studente.registra(nome, password);
         assertTrue(result);
     }
