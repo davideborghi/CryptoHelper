@@ -92,6 +92,8 @@ public class SistemaCifratura {
     }
     
     public void calcolaMappatura(){
+        //c è l'istanza del calcolatore della mappatura
+        //m è la mappatura
         switch(metodo) {
             case "Sistema di cesare":
                 c = new CalcolatoreCesare();
@@ -105,6 +107,7 @@ public class SistemaCifratura {
             default:
                 break;
         }
+        //in base al sistema scelto si calcola la mappatura dell'alfabeto
         this.m = c.calcola(this.chiave);
         System.out.println(m);
     }

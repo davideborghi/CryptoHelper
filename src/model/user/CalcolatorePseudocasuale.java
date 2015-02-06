@@ -21,6 +21,7 @@ public class CalcolatorePseudocasuale implements CalcolatoreMappatura{
     
     public Mappatura calcola(String s){
         String ris;
-        return new Mappatura();
+        //return new Mappatura();
+        return null;
     }
 }
