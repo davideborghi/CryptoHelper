@@ -52,6 +52,14 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         this.destinatario = destinatario;
         this.sdc = sdc;
     }
+    
+    public Messaggio(){
+        this.testo = null;
+        this.lingua = null;
+        this.mittente = null;
+        this.destinatario = null;
+        this.sdc = null;
+    }
 
     public void setLingua(String l) {
         this.lingua = l;

@@ -31,7 +31,7 @@ public class DbManager {
   
   private String schema = "cryptohelper"; // Nome del Database a cui connettersi
   private String uname = "root"; // Nome utente utilizzato per la connessione al Database
-  private String passw = ""; // Password usata per la connessione al Database
+  private String passw = "root"; // Password usata per la connessione al Database
   
   private Connection engine; // La connessione col Database
   
