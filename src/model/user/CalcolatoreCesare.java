@@ -18,19 +18,9 @@ public class CalcolatoreCesare implements CalcolatoreMappatura {
     }*/
     
     public Mappatura calcola(String c){
-        //Mappatura m = new Mappatura();
         int chiave = Integer.parseInt(c);
-        //mappaInversa = new char[mappa.length];
-        for(int i=0; i<mappa.length; i++){
-            /*if ((mappa[i]+chiave)<= 'z')
-                mappaInversa[i] = (char)((mappa[i] + chiave)); //riempie mappa inversa fino a z
-            else{
-                for (int j = 0; j < chiave; j++)
-                    mappaInversa[i++] = (char)(mappa[j]); //riempie mappa inversa da 'a' fino alla dimensione dello s
-            }*/
-                mappaInversa[i] = (char)(mappa[(i + chiave)%26]);
-        }
-        //return mappaInversa;*/
+        for(int i=0; i<mappa.length; i++)
+            mappaInversa[i] = (char)(mappa[(i + chiave)%26]);
         return new Mappatura(mappaInversa);
     }
 }
