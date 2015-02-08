@@ -48,7 +48,7 @@ public class Sessione extends Observable implements Serializable {
     String key = GenericSelector.selectOptions(optionList);
 
     //In base alla key scelta deserializza la Sessione dal database
-    Query u = db.createQuery("SELECT `id`, `sessione` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
+    Query u = db.createQuery("SELECT `id`, `session` FROM `Sessione` WHERE `userId` = ? AND `key` = ? LIMIT 1");
     u.setString(1, owner.getId());
     u.setString(2, key);
     QueryResult qr = db.execute(u);
@@ -58,7 +58,7 @@ public class Sessione extends Observable implements Serializable {
       try {
       ByteArrayInputStream bais;
       ObjectInputStream ins;
-      bais = new ByteArrayInputStream(qr.getBytes("sessione"));
+      bais = new ByteArrayInputStream(qr.getBytes("session"));
       ins = new ObjectInputStream(bais);
       result =(Sessione)ins.readObject();
       
@@ -120,14 +120,14 @@ public class Sessione extends Observable implements Serializable {
       byte[] data = bos.toByteArray();
     
       DbManager db = DbManager.getInstance();
-      Query q = db.createQuery("INSERT INTO `Sessione`(`userId`,`key`,`sessione`) VALUES( ?, ?, ? ) ON DUPLICATE KEY UPDATE `sessione` = ?");
+      Query q = db.createQuery("INSERT INTO `Sessione`(`userId`,`key`,`session`) VALUES( ?, ?, ? ) ON DUPLICATE KEY UPDATE `session` = ?");
       q.setString(1, owner.getId());
       q.setString(2, sessione.key);
       q.setObject(3, data);
       q.setObject(4, data);
       
       db.executeUpdate(q);
-
+      System.out.println("Sessione salvata correttamente");
     } catch (IOException | SQLException ex) {
       throw new RuntimeException(ex.getMessage(), ex);
     }

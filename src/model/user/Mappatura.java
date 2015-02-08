@@ -13,7 +13,9 @@ package model.user;
 public class Mappatura {
     private char[] mappa = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
     private char[] mappaInversa;
-    
+    public Mappatura(char[] mappaInversa){
+        this.mappaInversa = mappaInversa;
+    }
     public char[] getMap(){
         return this.mappa;
     }
@@ -23,18 +25,15 @@ public class Mappatura {
     }
     
     public char[] map(String c){
-        int chiave = Integer.parseInt(c);
+        /*int chiave = Integer.parseInt(c);
         mappaInversa = new char[mappa.length];
         for(int i=0; i<mappa.length; i++){
             mappaInversa[i] = (char)(((int)(mappa[i]) + chiave));
         }
+        return mappaInversa;*/
         return mappaInversa;
     }
-    
-    public char[] inverseMap(String c){
-        return new char[4];
-    }
-    
+ 
     public String toString(){
         String s = "";
         for(int i=0; i<mappa.length; i++){
