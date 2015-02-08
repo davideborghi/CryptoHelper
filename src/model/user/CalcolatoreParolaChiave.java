@@ -22,25 +22,48 @@ public class CalcolatoreParolaChiave implements CalcolatoreMappatura{
         System.out.println("parola chiave" + s);
         s = eliminaDoppie(s);
         System.out.println("parola chiave senza doppie" + s);
-        int lastIndex = 0;
         for (int i = 0; i < s.length(); i++){
             mappaInversa[i] = s.charAt(i); //assegna i caratteri della stringa s
-            lastIndex = i;
         }
         //devo partire dall'ultimo carattere della parola chiave e andare in ordine alfabetico togliendo i caratteri della pseudocasuale
-        char last = s.charAt(s.length()-1); //prendo l'ultimo carattere della stringa
-        int j = lastIndex+1;
-        do{
-            mappaInversa[j] = mappa[j];
+        int position = searchCharInArray(s.charAt(s.length()-1)); //prendo l'indice dell'ultimo carattere della stringa
+        
+        //comincio il ciclo dalla prima cella vuota della mappatura inversa che corrisponde con la lunghezza della stringa
+        Mappatura m = new Mappatura (mappaInversa);
+        int j = position, i = s.length(); 
+        // j usato per ciclare sulla mappa
+        // i usato per ciclare sulla mappaInversa
+        j++;
+        System.out.println("carattere della mappa da cui iniziare" + mappa[position]);
+        while (j < mappaInversa.length){
+            System.out.println("Mappatura in posizione " + j + "\n" +m.toString());
+            System.out.println("carattere letto " + mappa[j] + " " +s.indexOf(mappa[j]));
+            //System.out.println(s.charAt(mappa[j]));
+            if (s.indexOf(mappa[j]) == -1){        //se il carattere letto non era nella parola chiave
+                mappaInversa[i] = mappa[j];     // aggiungilo alla mappatura
+                System.out.println("aggiunto in posizione "+i);
+                i++;
+            }
+            else 
+                System.out.println("non aggiunto");
             j++;
         }
-        while(last!=s.charAt(mappa[j]));
-        for (int i = s.length(); i < mappaInversa.length; i++){
-            
-        }
         //return new Mappatura();
-        return null;
+        return new Mappatura(mappaInversa);
     }
+    /**
+     * metodo ausialiario per la ricerca della posizione del carattere nella mappa
+     * @param c
+     * @return posizione del carattere nella mappa, -1 se non esiste
+     */
+    private int searchCharInArray(char c){
+        for (int i = 0; i < mappa.length; i ++){
+            if (mappa[i]==c)
+                return i;
+        }
+        return -1;
+    }
+    
     
     /**
      * il cifratore a parola chiave ha bisogno di eliminare eventuali doppie dalla parola chiave
