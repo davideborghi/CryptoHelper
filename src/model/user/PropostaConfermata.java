@@ -24,6 +24,9 @@ public class PropostaConfermata extends Proposta{
     
     
     public String toString(){
-        return "Invia messaggio a " + this.partner.getId() + " utilizzando " + this.sdc.getSdc();
+        return this.partner + " utilizzando " + this.sdc.getSdc() + " con chiave " + this.sdc.getKey();
+    }
+    public UserInfo getPartner(){
+        return this.partner;
     }
 }

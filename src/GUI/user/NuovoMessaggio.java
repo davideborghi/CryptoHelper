@@ -30,19 +30,29 @@ public class NuovoMessaggio extends javax.swing.JFrame {
      */
     public NuovoMessaggio(Studente s, Messaggio r) {
         initComponents();
-        if (r != null) {
+        this.studente = s;
+//        System.out.println("id del messaggio recuperato " + r.getId());
+        this.proposte = CommunicationController.getProposteAccettate(this.studente.getId());
+        if (r != null) {//se riceve un messaggi in input sta recuperando una bozza
             this.restore = r;
+            
+            System.out.println("Invia messaggio a " + this.restore.getDestinatario());
+            jComboBox1.addItem("Invia messaggio a " + this.restore.getDestinatario());
+            jComboBox1.setSelectedItem("Invia messaggio a " + this.restore.getDestinatario());
+            
+            jComboBox3.setSelectedItem(this.restore.getLingua());
             jComboBox1.disable();
             jComboBox3.disable();
             jButton2.disable();
             jTextField1.setText(this.restore.getTesto());
         } else {
-            this.studente = s;
+            //this.studente = s;
 
-            this.proposte = CommunicationController.getProposteAccettate(this.studente.getId());
+            
+            
             int[] id_list = new int[proposte.length];
             for (int i = 0; i < id_list.length; i++) {
-                jComboBox1.addItem(proposte[i]);
+                jComboBox1.addItem("Invia messaggio a " + proposte[i]);
             }
         }
 
@@ -66,8 +76,9 @@ public class NuovoMessaggio extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         jComboBox3 = new javax.swing.JComboBox();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabel1.setText("Scegli il destinatario");
 
@@ -102,7 +113,7 @@ public class NuovoMessaggio extends javax.swing.JFrame {
 
         jLabel3.setText("Seleziona lingua");
 
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Scegli una lingua", "Italiano", "Inglese" }));
+        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Non specificata", "Italiano", "Inglese" }));
         jComboBox3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBox3ActionPerformed(evt);
@@ -113,6 +124,13 @@ public class NuovoMessaggio extends javax.swing.JFrame {
         jButton3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton3ActionPerformed(evt);
+            }
+        });
+
+        jButton4.setText("jButton4");
+        jButton4.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton4ActionPerformed(evt);
             }
         });
 
@@ -138,14 +156,14 @@ public class NuovoMessaggio extends javax.swing.JFrame {
                                 .addGap(0, 129, Short.MAX_VALUE))))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(57, 57, 57)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 213, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(46, 46, 46))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -165,13 +183,14 @@ public class NuovoMessaggio extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(51, 51, 51)
                         .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(27, 27, 27)
-                .addComponent(jButton2)
-                .addGap(51, 51, 51)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 64, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(116, 116, 116))
+                .addGap(25, 25, 25)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton1)
+                        .addComponent(jButton4)))
+                .addGap(50, 50, 50))
         );
 
         pack();
@@ -215,10 +234,9 @@ public class NuovoMessaggio extends javax.swing.JFrame {
     }//GEN-LAST:event_jComboBox3ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        // TODO add your handling code here:
         //il messaggio non viene inviato ma è salvato come bozza, in modo da
         //essere poi completato in un secondo momento
-        int languageIndex = jComboBox1.getSelectedIndex();
+        int languageIndex = jComboBox1.getSelectedIndex(); //indice del destinatario selezionato nella combobox
 
         String testo = jTextField1.getText();
         String lingua = (String) jComboBox3.getSelectedItem();
@@ -229,8 +247,10 @@ public class NuovoMessaggio extends javax.swing.JFrame {
         /* Instanzia il messaggio e cifralo */
         Messaggio m = new Messaggio(testo, lingua, mittente, destinatario, sdc);
         m.setBozza(true);
-        //m.cifra(); lo vogliamo cifrare anche se è una bozza??
         m.save();
+        if (restore != null )
+            CommunicationController.removeBozza(restore);
+        
         System.out.println("Il messaggio è stato salvato correttamente");
     }//GEN-LAST:event_jButton3ActionPerformed
 
@@ -238,10 +258,15 @@ public class NuovoMessaggio extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField1ActionPerformed
 
+    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+        
+    }//GEN-LAST:event_jButton4ActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JComboBox jComboBox1;
     private javax.swing.JComboBox jComboBox3;
     private javax.swing.JLabel jLabel1;

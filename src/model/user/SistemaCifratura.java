@@ -31,13 +31,13 @@ public class SistemaCifratura {
     public String toString(){
         return "Sistema di cifratura: creato da " + creatore.getId() + ", cifratura con " + this.metodo + " e chiave " + this.chiave;
     }
-    
-    public static void caricaSistemaCifratura(Studente s){
-        /** TODO **/
-    }
+
     
     public Mappatura getMappatura(){
         return this.m;
+    }
+    public String getKey(){
+        return this.chiave;
     }
     
     
@@ -87,9 +87,7 @@ public class SistemaCifratura {
         this.metodo = metodo;
     }
     
-    public String prova(String testo){
-        return "";
-    }
+    
     
     public void calcolaMappatura(){
         //c è l'istanza del calcolatore della mappatura

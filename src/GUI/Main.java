@@ -65,6 +65,7 @@ public class Main extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Benvenuto su CryptoHelper!!");
 
+        jTextField1.setText("bob");
         jTextField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextField1ActionPerformed(evt);
@@ -91,6 +92,7 @@ public class Main extends javax.swing.JFrame {
 
         jLabel5.setText("Login come:");
 
+        jPasswordField1.setText("root");
         jPasswordField1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jPasswordField1ActionPerformed(evt);

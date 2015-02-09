@@ -52,14 +52,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         this.destinatario = destinatario;
         this.sdc = sdc;
     }
-    
-    public Messaggio(){
-        this.testo = null;
-        this.lingua = null;
-        this.mittente = null;
-        this.destinatario = null;
-        this.sdc = null;
-    }
 
     public void setLingua(String l) {
         this.lingua = l;
@@ -189,7 +181,7 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
         return true;
     }
 
-    private String toStringF = "Messaggio in lingua: %lingua% inviato da %mittente%: %testo%";
+    private String toStringF = "Messaggio in lingua: %lingua% inviato da %mittente%, per %destinatarioID%: %testo%";
 
     public String setToStringF(String f) {
         String result = getToStringF();
@@ -262,13 +254,6 @@ public class Messaggio implements MessaggioMittente, MessaggioDestinatario {
      */
     public String getLingua() {
         return lingua;
-    }
-
-    /**
-     * @return the titolo
-     */
-    public String getTitolo() {
-        return titolo;
     }
 
     /**

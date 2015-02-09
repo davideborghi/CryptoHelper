@@ -35,7 +35,6 @@ public class Proposta {
     }
     
     public Proposta(){
-        /*query result*/
     }
     
     public SistemaCifratura getSdc(){
@@ -74,13 +73,7 @@ public class Proposta {
         return Controller.rifiutaProposta(this);
     }
     
-    public static void load(int id){
-        
-    }
     
-    public  static void caricaAttiva(int idProp, int idPartner){
-        
-    }
     
     public int getId(){
         return this.id;
@@ -91,7 +84,7 @@ public class Proposta {
     }*/
     
     public String toString(){
-        return "Utente con id " + proponente.getId() + " vuole scambiare un messaggio utilizzando " + sdc.getSdc();
+        return "Utente con nickname " + proponente + " vuole scambiare un messaggio utilizzando " + sdc.getSdc();
     }
     
 }

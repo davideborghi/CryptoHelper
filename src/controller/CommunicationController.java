@@ -53,17 +53,6 @@ public class CommunicationController extends Controller{
     }
     
     public static PropostaConfermata[] getProposteAccettate(String id_user){ //proposte pendenti
-        /*DbManager db = connect();
-        PropostaConfermata[] p;
-        Vector v = db.eseguiQuery("SELECT * FROM `cryptohelper`.`proposta` WHERE id_mittente = " + id_user + " && stato = 'accettata'");
-        if(v.size()<= 0) return new PropostaConfermata[0];
-        else{
-            p = new PropostaConfermata[v.size()];
-            for(int i = 0; i < v.size(); i++){
-                p[i] = new PropostaConfermata(Integer.parseInt(((String[])v.elementAt(i))[0]), new UserInfo(((String[])v.elementAt(i))[1]), new UserInfo(((String[])v.elementAt(i))[2]), SistemaCifratura.load(((String[])v.elementAt(i))[3]));
-            }
-            return p;
-        }*/
         ArrayList<PropostaConfermata> result = new ArrayList<>();
         
         try {
@@ -109,6 +98,9 @@ public class CommunicationController extends Controller{
     
     public Messaggio apriMessaggioRicevuto(int id){
         return null;
+    }
+    public static boolean removeBozza(Messaggio m){
+        return m.elimina();
     }
     
 }

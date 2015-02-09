@@ -35,7 +35,7 @@ public class CalcolatoreParolaChiave implements CalcolatoreMappatura{
         // i usato per ciclare sulla mappaInversa
         j++;
         System.out.println("carattere della mappa da cui iniziare" + mappa[position]);
-        while (j < mappaInversa.length){
+        while (i < mappaInversa.length){
             System.out.println("Mappatura in posizione " + j + "\n" +m.toString());
             System.out.println("carattere letto " + mappa[j] + " " +s.indexOf(mappa[j]));
             //System.out.println(s.charAt(mappa[j]));
@@ -44,11 +44,14 @@ public class CalcolatoreParolaChiave implements CalcolatoreMappatura{
                 System.out.println("aggiunto in posizione "+i);
                 i++;
             }
-            else 
+            else {
                 System.out.println("non aggiunto");
-            j++;
+            }
+            if (j == mappa.length-1)   //se sono arrivato in fondo alla mappa originale
+                j=0;                //ricomincio con la mappatura dall'inizio
+            else
+                j++;                //altrimenti prosegui semplicemente
         }
-        //return new Mappatura();
         return new Mappatura(mappaInversa);
     }
     /**

@@ -23,6 +23,7 @@ public class Studente {
     private String id;
     private String login;
     private String pwd;
+    private DbManager DbManager0;
     
     public Studente(String user){
         this.login = user;
@@ -116,6 +117,13 @@ public class Studente {
    */
   public String getPwd() {
     return pwd;
+  }
+
+  /**
+   * @return the DbManager0
+   */
+  public DbManager getDbManager0() {
+    return DbManager0;
   }
   
 }
